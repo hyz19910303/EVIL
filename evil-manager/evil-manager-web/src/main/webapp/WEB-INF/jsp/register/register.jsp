@@ -34,29 +34,27 @@
 						  </ul>
 						  <div class="layui-tab-content" style="height: 100px;">
 						    <div class="layui-tab-item layui-show">
-						    	<div style="position: inherit;margin: 20px 5px 0 5px;height: 300px">
-						    		<div style="margin: 30px 20px 0 20px ;height: 250px">
+								<div id="warn_msg_login" style="display: inline-block;height: 40px;width: 200px;margin-left: 120px;color: red;"></div>
+						    	<div style="position: inherit;margin: 0 5px 0 5px;height: 300px">
+						    		<div style="margin: 0px 20px 0 20px ;height: 250px">
 						    			<form id="registerForm" class="layui-form" method="post">
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">用&nbsp;户&nbsp;名<span style="color: red">*</span></label>
 											    <div class="layui-input-inline ">
 											      <input  type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input">
 											    </div>
-											    <span id="username_msg" class="evil-warn-msg"></span>
 											  </div>
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码<span style="color: red">*</span></label>
 											    <div class="layui-input-inline">
 											      <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
 											    </div>
-											    <span id="password_msg" class="evil-warn-msg"></span>
 											  </div>
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">确认密码<span style="color: red">*</span></label>
 											    <div class="layui-input-inline">
 											      <input type="password" name="confirm_password" lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
 											    </div>
-											    <span id="confirm_password_msg" class="evil-warn-msg"></span>
 											  </div>
 											  <div class="layui-form-item">
 											    <div class="layui-inline">
@@ -83,22 +81,21 @@
 						    	</div>
 						    </div>
 						    <div class="layui-tab-item">
-						    	<div style="position: inherit;margin: 20px 5px 0 5px;height: 300px">
-						    		<div style="margin: 30px 20px 0 20px ;height: 250px">
+						    	<div id="warn_msg_register" style="display: inline-block;height: 40px;width: 200px;margin-left: 120px;color: red;"></div>
+						    	<div style="position: inherit;margin: 0px 5px 0 5px;height: 300px">
+						    		<div style="margin: 0px 20px 0 20px ;height: 250px">
 								    	<form id="loginForm" class="layui-form" method="post">
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">用&nbsp;户&nbsp;名<span style="color: red">*</span></label>
 											    <div class="layui-input-inline ">
 											      <input  type="text" name="username" lay-verify="required" autocomplete="off" placeholder="请输入用户名" class="layui-input">
 											    </div>
-											    <span id="username_msg" class="evil-warn-msg"></span>
 											  </div>
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码<span style="color: red">*</span></label>
 											    <div class="layui-input-inline">
 											      <input type="password" name="password" lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
 											    </div>
-											    <span id="password_msg" class="evil-warn-msg"></span>
 											  </div>
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">验&nbsp;证&nbsp;码<span style="color: red">*</span></label>
