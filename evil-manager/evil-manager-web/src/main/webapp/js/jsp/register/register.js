@@ -111,12 +111,12 @@ function bindTabPageEvent(){
 }
 function formVerify(){
 	layui.use(['form', 'layedit', 'laydate'], function(){
-		var form= layui.form
-		  ,layer = layui.layer
-		  ,layedit = layui.layedit
-		  ,laydate = layui.laydate;
+		var form= layui.form,layer = layui.layer,layedit = layui.layedit,laydate = layui.laydate;
 		form.on('submit(demo1)', function(data){
 			var datejson=JSON.stringify(data.field);
+			$.ajax({
+				
+			});
 			return true;
 		});
 	});
