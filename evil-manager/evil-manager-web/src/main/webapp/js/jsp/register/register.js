@@ -112,16 +112,42 @@ function bindTabPageEvent(){
 function formVerify(){
 	layui.use(['form', 'layedit', 'laydate'], function(){
 		var form= layui.form,layer = layui.layer,layedit = layui.layedit,laydate = layui.laydate;
-		form.on('submit(demo1)', function(data){
+		form.on('submit()', function(data){
 			var datejson=JSON.stringify(data.field);
-			$.ajax({
-				
-			});
-			return true;
+		
 		});
 	});
 }
-
+function  submit_login(){
+	$.ajax({
+		url:projectName+"/Sys/login",
+		data:datejson,
+		dataType:"json",
+		type:"post",
+		success:function(data){
+			if(data.login_err_msg){
+				alert(11);
+//				window.href=""
+			}
+		},
+		error:function(e){
+			alert(e);
+		}
+	});
+}
+/**
+ * 
+ * <p>MethodName: verifyCode</p>
+ * <p>Description: 验证码</p>
+ * @returns
+ * 
+ * @example
+ *
+ * @author EVIL
+ * @date 2017年9月11日
+ * @version 1.0
+ * Create At 2017年9月11日 下午2:51:58
+ */
 function verifyCode(){
 	$("#verifyCode").on('click',function(){
 		$("#verifyCode").attr({'src':projectName+"/verifyCode?_="+new Date().getTime()});

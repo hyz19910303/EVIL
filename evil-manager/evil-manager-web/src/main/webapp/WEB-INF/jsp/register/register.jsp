@@ -74,7 +74,7 @@
 											  </div>
 											  <div class="layui-form-item">
 											    <div class="layui-input-block">
-											      <button class="layui-btn" lay-submit="" lay-filter="demo1">注册</button>
+											      <button class="layui-btn" lay-submit="" lay-filter="rejister">注册</button>
 											      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 											    </div>
 											  </div>
@@ -103,7 +103,7 @@
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">验&nbsp;证&nbsp;码<span style="color: red">*</span></label>
 											    <div class="layui-input-inline" style="width: 100px">
-											      <input type="text" name="validateCode" lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
+											      <input type="text" name="verifyCode" lay-verify="required" placeholder="请输入验证码" autocomplete="off" class="layui-input">
 											    </div>
 												  <div style="margin: 1px 0 0 0;height: 36px;width: 80px;display: inline-block;cursor: pointer;">
 												  	<img id="verifyCode" style="height: 36px;width: 80px" alt="" src="/evil/verifyCode">
@@ -111,7 +111,7 @@
 											  </div>
 											  <div class="layui-form-item">
 											    <div class="layui-input-block">
-											      <button class="layui-btn" style="margin-left: 40px" lay-submit="" lay-filter="demo1">登&nbsp;&nbsp;入</button>
+											      <button class="layui-btn" style="margin-left: 40px" lay-submit="" >登&nbsp;&nbsp;入</button>
 											    </div>
 											  </div>
 										</form>
