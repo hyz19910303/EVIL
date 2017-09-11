@@ -22,7 +22,13 @@ $(function(){
  */
 function ScrentAutoSize(window){
 	var height=screen.availHeight;
+	var width=screen.availWidth;
 	$("#register_main").css("height",height-150);
+	//针对14寸电脑修改显示大小
+	if(width<=1366){
+		$("#main_content").css("margin","0 100px");
+		$("#register_main").css("padding-top","40px");
+	}
 }
 /**
  * 

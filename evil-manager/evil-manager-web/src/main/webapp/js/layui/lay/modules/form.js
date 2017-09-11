@@ -426,13 +426,20 @@ layui.define('layer', function(exports){
         var isFn = typeof verify[thisVer] === 'function';
         if(verify[thisVer] && (isFn ? tips = verify[thisVer](value, item) : !verify[thisVer][0].test(value)) ){
         	var name=item.name;
-        	if(passwordArr.length>=2){
-        		if(passwordArr[1]!=passwordArr[0]){
-        			$("#"+name+"_msg").html('2次密码不一致');
-        		}
-        	}else{
-        		$("#"+name+"_msg").html('格式不对');
+        	var submitbtn=button.text();
+        	var warn_msg="warn_msg_login";
+        	if(submitbtn!="登入" || submitbtn.indexof("登")==-1){
+        		warn_msg="warn_msg_register";
         	}
+        	if(passwordArr.length>=2 && passwordArr[1]!=passwordArr[0]){
+    			$("#"+warn_msg).html('密码不一致');
+    			$("#confirm_password").val("").focus();
+        		return stop = true;
+        	}else{
+        		$("#"+warn_msg).html('请输入选项正确的格式');
+        		return stop = true;
+        	}
+        	
 //        	layer.tips('Hi，我是一个小提示', this, {tips: 2});
 //          layer.msg(tips || verify[thisVer][1], {
 //            icon: 5

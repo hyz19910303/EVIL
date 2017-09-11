@@ -11,17 +11,17 @@
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/jsp/register/register.js"></script>
 </head>
 <body>
-	<div style="display: block;margin-left: 200px;margin-right: 200px;background-color: #fbf7f7;height: 100%">
+	<div id="main_content" style="display: block;margin-left: 200px;margin-right: 200px;background-color: #fbf7f7;height: 100%">
 		<div id="register_main" style="padding-top: 80px;">
 			<div style="margin:40px 50px 40px 50px ;height: 500px;">
-				<div  id="border_div" style="display: inline-block;background-color: white;height: 500px;width: 600px">
+				<div  id="border_div" style="display: inline-block;background-color: white;height: 500px;width: 600px;margin-left: 10px">
 					<div class="layui-carousel" id="test10" style="display: inline-block;">
 						  <div id="carousel_item" carousel-item="" style="border-radius: 5px;">
 						  	
 						  </div>
 					</div>
 				</div>
-				<div style="display: inline-block;background-color: white;height: 500px;width: 10px"></div>
+				<div style="display: inline-block;height: 500px;width: 20px"></div>
 				<div style="display: inline-block;background-color: #fefefe;height: 500px;width: 400px;box-sizing:content-box;border-radius: 5px;border: 1px solid;position: absolute;">
 					<div class="layui-tab layui-tab-brief" >
 						  <ul class="layui-tab-title">
@@ -34,7 +34,7 @@
 						  </ul>
 						  <div class="layui-tab-content" style="height: 100px;">
 						    <div class="layui-tab-item layui-show">
-								<div id="warn_msg_login" style="display: inline-block;height: 40px;width: 200px;margin-left: 120px;color: red;"></div>
+								<div id="warn_msg_register" style="display: inline-block;height: 40px;width: 200px;margin-left: 120px;color: red;"></div>
 						    	<div style="position: inherit;margin: 0 5px 0 5px;height: 300px">
 						    		<div style="margin: 0px 20px 0 20px ;height: 250px">
 						    			<form id="registerForm" class="layui-form" method="post">
@@ -53,7 +53,7 @@
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">确认密码<span style="color: red">*</span></label>
 											    <div class="layui-input-inline">
-											      <input type="password" name="confirm_password" lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
+											      <input type="password" id="confirm_password" name="confirm_password" lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
 											    </div>
 											  </div>
 											  <div class="layui-form-item">
@@ -81,7 +81,7 @@
 						    	</div>
 						    </div>
 						    <div class="layui-tab-item">
-						    	<div id="warn_msg_register" style="display: inline-block;height: 40px;width: 200px;margin-left: 120px;color: red;"></div>
+						    	<div id="warn_msg_login" style="display: inline-block;height: 40px;width: 200px;margin-left: 120px;color: red;"></div>
 						    	<div style="position: inherit;margin: 0px 5px 0 5px;height: 300px">
 						    		<div style="margin: 0px 20px 0 20px ;height: 250px">
 								    	<form id="loginForm" class="layui-form" method="post">
@@ -108,7 +108,7 @@
 											  </div>
 											  <div class="layui-form-item">
 											    <div class="layui-input-block">
-											      <button class="layui-btn" id="login_btn" style="margin-left: 40px" lay-submit="" lay-filter="login" >登&nbsp;&nbsp;入</button>
+											      <button class="layui-btn" id="login_btn" style="margin-left: 40px" lay-submit="" lay-filter="login" >登入</button>
 											    </div>
 											  </div>
 										</form>
