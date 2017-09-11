@@ -1,6 +1,7 @@
 package com.hyz.controller;
 
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -175,9 +176,14 @@ public class LoginController {
 	@RequestMapping("/register")
 	@ResponseBody
 	public String register(HttpServletRequest request,HttpServletResponse response){
+		Enumeration<String> parameterNames = request.getParameterNames();
+		System.out.println(parameterNames);
+		Map<String, String[]> parameterMap = request.getParameterMap();
+		System.out.println(parameterMap);
+		
 		String userName=request.getParameter("username");
 		String password=request.getParameter("password");
-		if(StringUtils.isNotBlank(userName)||StringUtils.isNotBlank(password)){
+		if(!StringUtils.isNotBlank(userName)||!StringUtils.isNotBlank(password)){
 			return "注册失败";
 		}
 		UserDO  userdo = new UserDO();

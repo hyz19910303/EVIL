@@ -3,7 +3,7 @@ $(function(){
 	carousel();
 	bingcarouselImage();
 	bindTabPageEvent();
-	formVerify();
+	formSubmit();
 	verifyCode();
 });
 /**
@@ -109,19 +109,76 @@ function bindTabPageEvent(){
 		});
 	}
 }
-function formVerify(){
+function formSubmit(){
 	layui.use(['form', 'layedit', 'laydate'], function(){
 		var form= layui.form,layer = layui.layer,layedit = layui.layedit,laydate = layui.laydate;
-		form.on('submit()', function(data){
-			var datejson=JSON.stringify(data.field);
-		
+		form.on('submit(login)', function(obj){
+			var datejson=JSON.stringify(obj.field);
+			$.ajax({
+				url:projectName+"/Sys/login",
+				data:obj.field,
+				dataType:"json",
+				type:"post",
+				success:function(data){
+					if(!data.login_err_msg){
+						window.location.href=localhostPath+projectName;
+					}
+				},
+				error:function(e){
+					alert(e+1);
+				}
+			});
+			return false;
+		});
+		form.on('submit(register)', function(obj){
+			var datejson=JSON.stringify(obj.field);
+			$.ajax({
+				url:projectName+"/Sys/register",
+				data:obj.field,
+				dataType:"json",
+				type:"post",
+				success:function(data){
+					if(data.login_err_msg){
+						alert(22);
+//						window.href=""
+					}
+				},
+				error:function(e){
+					alert(e);
+				}
+			});
+			return false;
 		});
 	});
 }
-function  submit_login(){
+function GetItems(fieldArr){
+	var o={};
+	$(fieldArr).each(function(index,item){
+		if(!o[item.name] && o[item.name]!=""){
+			o[item.name]=item.value;
+		}else{
+			if(!o[item.name].push){
+				o[item.name]=[o[item.name]];
+			}
+			o[item.name].push(item.value);
+		}
+	});
+	return o;
+}
+function bindLoginAndRejister(){
+	$("login_btn").on('click',function(){
+		submit_login("loginForm","/Sys/login");
+	});
+	$("register_btn").on('click',function(){
+		submit_login("registerForm","/Sys/register");
+	});
+}
+function  submit_login(id,uri){
+	var fieldElem = $("#"+id).find('input,select,checkbox') 
+	var datajson=GetItems(fieldElem);
 	$.ajax({
-		url:projectName+"/Sys/login",
-		data:datejson,
+		url:projectName+uri,
+		data:datajson,
 		dataType:"json",
 		type:"post",
 		success:function(data){

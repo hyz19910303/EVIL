@@ -457,7 +457,7 @@ layui.define('layer', function(exports){
       field[item.name] = item.value;
     });
  
-    //获取字段
+//    获取字段
     return layui.event.call(this, MOD_NAME, 'submit('+ filter +')', {
       elem: this
       ,form: formElem

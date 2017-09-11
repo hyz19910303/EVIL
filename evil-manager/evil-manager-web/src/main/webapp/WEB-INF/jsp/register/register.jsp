@@ -36,7 +36,7 @@
 						    <div class="layui-tab-item layui-show">
 						    	<div style="position: inherit;margin: 20px 5px 0 5px;height: 300px">
 						    		<div style="margin: 30px 20px 0 20px ;height: 250px">
-						    			<form class="layui-form" method="post">
+						    			<form id="registerForm" class="layui-form" method="post">
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">用&nbsp;户&nbsp;名<span style="color: red">*</span></label>
 											    <div class="layui-input-inline ">
@@ -74,7 +74,7 @@
 											  </div>
 											  <div class="layui-form-item">
 											    <div class="layui-input-block">
-											      <button class="layui-btn" lay-submit="" lay-filter="rejister">注册</button>
+											      <button class="layui-btn" id="register_btn" lay-submit="" lay-filter="register">注册</button>
 											      <button type="reset" class="layui-btn layui-btn-primary">重置</button>
 											    </div>
 											  </div>
@@ -85,7 +85,7 @@
 						    <div class="layui-tab-item">
 						    	<div style="position: inherit;margin: 20px 5px 0 5px;height: 300px">
 						    		<div style="margin: 30px 20px 0 20px ;height: 250px">
-								    	<form class="layui-form" method="post">
+								    	<form id="loginForm" class="layui-form" method="post">
 											  <div class="layui-form-item">
 											    <label class="layui-form-label" style="padding-left: 0px">用&nbsp;户&nbsp;名<span style="color: red">*</span></label>
 											    <div class="layui-input-inline ">
@@ -111,7 +111,7 @@
 											  </div>
 											  <div class="layui-form-item">
 											    <div class="layui-input-block">
-											      <button class="layui-btn" style="margin-left: 40px" lay-submit="" >登&nbsp;&nbsp;入</button>
+											      <button class="layui-btn" id="login_btn" style="margin-left: 40px" lay-submit="" lay-filter="login" >登&nbsp;&nbsp;入</button>
 											    </div>
 											  </div>
 										</form>
