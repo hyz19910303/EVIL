@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx 
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<!-- 配置aop的事务 -->
+	<!-- 事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	<tx:annotation-driven  transaction-manager="transactionManager" />   
+	<!-- 事务通知 -->
+	<!-- <tx:advice id="myAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" isolation="DEFAULT" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice>
+	<tx:advice id="Advice" transaction-manager="hibernateTransactionManager">
+		<tx:attributes>
+			<tx:method name="get*" isolation="DEFAULT" propagation="REQUIRED" />
+		</tx:attributes>
+	</tx:advice> -->
+
+	<!-- 事务的顾问 -->
+	<!-- <aop:config>
+		切入点
+		<aop:pointcut expression="execution(* *..service.*.*(..))"
+			id="myPointcut" />
+		配置顾问
+		<aop:advisor advice-ref="myAdvice" pointcut-ref="myPointcut" />
+		<aop:advisor advice-ref="Advice" pointcut-ref="myPointcut" />
+	</aop:config> -->
+	<tx:annotation-driven  transaction-manager="hibernateTransactionManager" />   
+</beans>
+

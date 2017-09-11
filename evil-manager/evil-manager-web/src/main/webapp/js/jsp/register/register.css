@@ -1,0 +1,16 @@
+.evil-regiser-title {
+	font-size: 1.5em;
+	color: #4d5e73;
+	padding: 25px 30px 15px 30px;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+	width: 197px;
+}
+
+.evil-warn-msg {
+	font-size: 10px;
+	color: red;
+	text-align: left;
+	margin-top: 10px;
+	vertical-align: middle;
+	display: inline-block;
+}
