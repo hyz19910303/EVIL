@@ -125,13 +125,20 @@ function formSubmit(){
 				data:obj.field,
 				dataType:"json",
 				type:"post",
+				beforeSend:function(xhr){
+					$("#warn_msg_login").html("登入中...");
+					$("#login_btn").addClass('layui-btn-disabled').unbind();
+				},
 				success:function(data){
 					if(!data.login_err_msg){
 						window.location.href=localhostPath+projectName;
+					}else{
+						$("#login_btn").removeClass('layui-btn-disabled').bind('submit');
+						$("#warn_msg_login").html(data.login_err_msg);
 					}
 				},
 				error:function(e){
-					alert(e+1);
+					$("#login_btn").show();
 				}
 			});
 			return false;
@@ -143,10 +150,14 @@ function formSubmit(){
 				data:obj.field,
 				dataType:"json",
 				type:"post",
+				beforeSend:function(xhr){
+					$("#register_btn").hide();
+				},
 				success:function(data){
-					if(data.login_err_msg){
-						alert(22);
-//						window.href=""
+					if(!data.registerInfo){
+						window.location.href=localhostPath+projectName;
+					}else{
+						$("#warn_msg_register").html(data.registerInfo);
 					}
 				},
 				error:function(e){

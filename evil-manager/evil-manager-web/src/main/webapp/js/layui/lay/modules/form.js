@@ -428,16 +428,25 @@ layui.define('layer', function(exports){
         	var name=item.name;
         	var submitbtn=button.text();
         	var warn_msg="warn_msg_login";
-        	if(submitbtn!="登入" || submitbtn.indexof("登")==-1){
+        	if(submitbtn!="登入" || submitbtn.indexOf("登")==-1){
         		warn_msg="warn_msg_register";
         	}
         	if(passwordArr.length>=2 && passwordArr[1]!=passwordArr[0]){
     			$("#"+warn_msg).html('密码不一致');
     			$("#confirm_password").val("").focus();
+    			window.setTimeout(function(){
+        			$("#"+warn_msg).html("");
+        		},2000);
         		return stop = true;
         	}else{
         		$("#"+warn_msg).html('请输入选项正确的格式');
-        		return stop = true;
+        		window.setTimeout(function(){
+        			$("#"+warn_msg).html("");
+        		},2000);
+//        		$("#"+warn_msg).fadeOut("slow",function(){
+//        			   $(this).html('')
+//        		});
+        		//return stop = true;
         	}
         	
 //        	layer.tips('Hi，我是一个小提示', this, {tips: 2});

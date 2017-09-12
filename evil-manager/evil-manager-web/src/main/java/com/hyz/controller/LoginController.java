@@ -1,13 +1,14 @@
 package com.hyz.controller;
 
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -31,9 +32,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.alibaba.fastjson.JSON;
+import com.beust.jcommander.internal.Maps;
 import com.hyz.evil.util.GenelateRandomNumberUtil;
 import com.hyz.pojo.UserDO;
 import com.hyz.service.roleservice.RoleService;
@@ -86,21 +89,16 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/login",method=RequestMethod.POST,produces="application/json;charset=utf-8")
 	@ResponseBody
-	public Object login(HttpServletRequest request,HttpServletResponse response) {
-		response.setCharacterEncoding("UTF-8");
+	public String login(@RequestParam(name="username",required=true) String username,@RequestParam(name="password",required=true) String password,@RequestParam(name="remeberMe",required=false) String remeberMe,@RequestParam(name="verifyCode",required=true) String verifyCode,HttpServletRequest request,HttpSession session) {
 		Map<String,String> errMap= new HashMap<>();
-		String verifyCode=request.getParameter("verifyCode");
-		String attribute = (String) request.getSession().getAttribute("verifyCode");
+		String attribute = (String) session.getAttribute("verifyCode");
 		if(verifyCode !=null && !verifyCode.equals(attribute)) {
 			errMap.put("login_err_msg", "验证码不正确");
-			return errMap;
+			return JSON.toJSONString(errMap);
 		}
-		String userName=request.getParameter("username");
-		String password=request.getParameter("password");
-		String remeberme=request.getParameter("remeberMe");
 		String remoteHost = request.getRemoteHost();
 		boolean remeberFlag=false;
-		if(remeberme!=null && !"".equals(remeberme)){
+		if(remeberMe!=null && !"".equals(remeberMe)){
 			remeberFlag=true;
 		}
 		UsernamePasswordToken token = null;
@@ -109,12 +107,12 @@ public class LoginController {
 		try {
 			//缓存
 			Cache<String, AtomicInteger> shiroCacheManager = cachemanager.getCache("passwordRetryCache");
-			atomicinteger= shiroCacheManager.get(userName);
+			atomicinteger= shiroCacheManager.get(username);
 			if (atomicinteger == null) {  
 				atomicinteger = new AtomicInteger(0);  
-				shiroCacheManager.put(userName, atomicinteger);  
+				shiroCacheManager.put(username, atomicinteger);  
 	        }  
-			token = new UsernamePasswordToken(userName,password,remeberFlag,remoteHost);
+			token = new UsernamePasswordToken(username,password,remeberFlag,remoteHost);
 			subject = SecurityUtils.getSubject();
 			//尝试次数过多
 			if(atomicinteger.incrementAndGet()>5){
@@ -123,7 +121,6 @@ public class LoginController {
 				throw new ExcessiveAttemptsException();
 			}
 			subject.login(token);
-			
 		}catch(UnknownAccountException e){//未知账户
 			errMap.put("login_err_msg", "用户名或者密码错误,登入失败,总共可以尝试5次,还剩下"+(5-atomicinteger.get())+"次");
 		}catch(LockedAccountException e){//账号锁定
@@ -145,21 +142,27 @@ public class LoginController {
 			DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
 			DefaultWebSessionManager sessionManager = (DefaultWebSessionManager)securityManager.getSessionManager();
 			Collection<Session> activeSessions = sessionManager.getSessionDAO().getActiveSessions();
-			for (Session session : activeSessions) {
-				UserDO udo=(UserDO) session.getAttribute("user");
-				if(udo==null) continue;
-				if(userName.equals(udo.getAccountNo())){
-					//其他登入的地址下线
-					sessionManager.getSessionDAO().delete(session); 
-				}
-			}
+			Lock lock=new ReentrantLock();
+			lock.lock();
 			try {
-				UserDO userDo = userService.login(userName);
-				Session session = subject.getSession();
-				session.setAttribute("user", userDo);
-				errMap.put("login_err_msg", null);
-			} catch (Exception e) {
+				for (Session session_shiro : activeSessions) {
+					UserDO udo=(UserDO) session_shiro.getAttribute("user");
+					if(udo==null) continue;
+					if(username.equals(udo.getAccountNo())){
+						//其他登入的地址下线
+						sessionManager.getSessionDAO().delete(session_shiro); 
+					}
+				}
+				UserDO userDo = userService.login(username);
+				Session session_ = subject.getSession();
+				session_.setAttribute("user", userDo);
+				errMap.put("login_err_msg", "");
+				 
+			}catch (Exception e) {
 				e.printStackTrace();
+			}
+			finally {
+				lock.unlock();
 			}
 //			return ":/Sys/success.do";
 		}else{
@@ -175,29 +178,31 @@ public class LoginController {
 	}
 	@RequestMapping("/register")
 	@ResponseBody
-	public String register(HttpServletRequest request,HttpServletResponse response){
-		Enumeration<String> parameterNames = request.getParameterNames();
-		System.out.println(parameterNames);
-		Map<String, String[]> parameterMap = request.getParameterMap();
-		System.out.println(parameterMap);
-		
-		String userName=request.getParameter("username");
-		String password=request.getParameter("password");
-		if(!StringUtils.isNotBlank(userName)||!StringUtils.isNotBlank(password)){
-			return "注册失败";
+	public String register(@RequestParam(name="username",required=true) String username,@RequestParam(name="password",required=true) String password,@RequestParam(name="confirm_password",required=true) String confirm_password,@RequestParam(name="phone",required=false)String phone,@RequestParam(name="email",required=false)String email){
+//		String userName=request.getParameter("username");
+//		String password=request.getParameter("password");
+//		String phone=request.getParameter("phone");
+		Map<String,String> infoMap= Maps.newHashMap();
+		if(!StringUtils.isNotBlank(username)||!StringUtils.isNotBlank(password)){
+			infoMap.put("registerInfo", "用户名或者密码不能为空");
+			return JSON.toJSONString(infoMap);
 		}
 		UserDO  userdo = new UserDO();
 		try {
 			String salt=GenelateRandomNumberUtil.genalateRandomString(3);
 			userdo.setSalt(salt);
 			SimpleHash simpleHash = new SimpleHash("MD5", password, salt, 1);  
-			userdo.setAccountNo(userName);
+			userdo.setAccountNo(username);
 			userdo.setPassword(simpleHash.toString());
 			int flag=userService.registerNewUser(userdo);
+			if(flag!=1)infoMap.put("registerInfo", "注册发生异常");
+			return JSON.toJSONString(infoMap);
 		} catch (Exception e) {
 			e.printStackTrace();
+			infoMap.put("registerInfo", "注册发生异常");
+			return JSON.toJSONString(infoMap);
 		}
-		return "login/welcome";
+		//return "login/welcome";
 	}
 	
 	@RequestMapping("/logout.do")

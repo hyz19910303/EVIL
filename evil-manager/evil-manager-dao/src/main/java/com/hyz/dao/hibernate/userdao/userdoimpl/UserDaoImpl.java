@@ -34,8 +34,8 @@ public class UserDaoImpl implements UserDao {
 		createSQLQuery.setString(1, userdo.getAccountNo());
 		createSQLQuery.setString(2, userdo.getPassword());
 		createSQLQuery.setString(3, userdo.getSalt());
-		createSQLQuery.executeUpdate();
-		return 0;
+//		sessionfactory.getCurrentSession().
+		return createSQLQuery.executeUpdate();
 	}
 
 }
