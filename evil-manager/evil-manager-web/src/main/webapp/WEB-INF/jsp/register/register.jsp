@@ -51,7 +51,7 @@
 											    </div>
 											  </div>
 											  <div class="layui-form-item">
-											    <label class="layui-form-label" style="padding-left: 0px">确认密码<span style="color: red">*</span></label>
+											    <label class="layui-form-label" style="padding-left: 0px;vertical-align: sub;">确认密码<span style="color: red">*</span></label>
 											    <div class="layui-input-inline">
 											      <input type="password" id="confirm_password" name="confirm_password" lay-verify="required" placeholder="请再次输入密码" autocomplete="off" class="layui-input">
 											    </div>

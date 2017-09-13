@@ -148,12 +148,15 @@ public class LoginController {
 				for (Session session_shiro : activeSessions) {
 					UserDO udo=(UserDO) session_shiro.getAttribute("user");
 					if(udo==null) continue;
-					if(username.equals(udo.getAccountNo())){
+					//用户名相同 但是登入地址不同 的下线
+					if(username.equals(udo.getAccountNo()) && !remoteHost.equals(udo.getAddress())){
 						//其他登入的地址下线
 						sessionManager.getSessionDAO().delete(session_shiro); 
 					}
 				}
 				UserDO userDo = userService.login(username);
+				//设置ip地址  防止同一地点2次连续登入
+				userDo.setAddress(remoteHost);
 				Session session_ = subject.getSession();
 				session_.setAttribute("user", userDo);
 				errMap.put("login_err_msg", "");
