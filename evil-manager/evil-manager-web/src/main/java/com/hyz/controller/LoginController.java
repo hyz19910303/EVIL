@@ -1,6 +1,7 @@
 package com.hyz.controller;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.ConcurrentAccessException;
@@ -105,34 +107,34 @@ public class LoginController {
 		Subject subject = null;
 		AtomicInteger  atomicinteger=null;
 		try {
+			token = new UsernamePasswordToken(username,password,remeberFlag,remoteHost);
+			subject = SecurityUtils.getSubject();
+			subject.login(token);
 			//缓存
 			Cache<String, AtomicInteger> shiroCacheManager = cachemanager.getCache("passwordRetryCache");
 			atomicinteger= shiroCacheManager.get(username);
 			if (atomicinteger == null) {  
 				atomicinteger = new AtomicInteger(0);  
 				shiroCacheManager.put(username, atomicinteger);  
-	        }  
-			token = new UsernamePasswordToken(username,password,remeberFlag,remoteHost);
-			subject = SecurityUtils.getSubject();
+			}  
 			//尝试次数过多
 			if(atomicinteger.incrementAndGet()>5){
 				//进行账号锁定1小时.
 				//TO-DO 
 				throw new ExcessiveAttemptsException();
 			}
-			subject.login(token);
 		}catch(UnknownAccountException e){//未知账户
-			errMap.put("login_err_msg", "用户名或者密码错误,登入失败,总共可以尝试5次,还剩下"+(5-atomicinteger.get())+"次");
+			errMap.put("login_err_msg", "用户名不存在");
 		}catch(LockedAccountException e){//账号锁定
-			errMap.put("login_err_msg", "账号已经锁定,登入失败,总共可以尝试5次,还剩下"+(5-atomicinteger.get())+"次");
+			errMap.put("login_err_msg", "账号已经锁定");
 		}catch(ExcessiveAttemptsException e){//尝试次数过多
 			errMap.put("login_err_msg", "尝试次数过多");
 		}catch(IncorrectCredentialsException e){//错误的凭证
-			errMap.put("login_err_msg", "用户名或者密码错误,登入失败,总共可以尝试5次,还剩下"+(5-atomicinteger.get())+"次");
+			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次");
 		}catch(ConcurrentAccessException e){
 			errMap.put("login_err_msg", "用户已经登入");
 		}catch (AuthenticationException e) {
-			errMap.put("login_err_msg", "用户名或者密码错误,登入失败,总共可以尝试5次,还剩下"+(5-atomicinteger.get())+"次");
+			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次");
 		}
 		//验证是否合法
 		if(subject.isAuthenticated()){
@@ -159,7 +161,7 @@ public class LoginController {
 				userDo.setAddress(remoteHost);
 				Session session_ = subject.getSession();
 				session_.setAttribute("user", userDo);
-				errMap.put("login_err_msg", "");
+				errMap.put("login_succ_msg", "success");
 				 
 			}catch (Exception e) {
 				e.printStackTrace();
@@ -182,10 +184,11 @@ public class LoginController {
 	@RequestMapping("/register")
 	@ResponseBody
 	public String register(@RequestParam(name="username",required=true) String username,@RequestParam(name="password",required=true) String password,@RequestParam(name="confirm_password",required=true) String confirm_password,@RequestParam(name="phone",required=false)String phone,@RequestParam(name="email",required=false)String email){
-//		String userName=request.getParameter("username");
-//		String password=request.getParameter("password");
-//		String phone=request.getParameter("phone");
 		Map<String,String> infoMap= Maps.newHashMap();
+		if(!password.equals(confirm_password)) {
+			infoMap.put("registerInfo", "2次密码不一致");
+			return JSON.toJSONString(infoMap);
+		}
 		if(!StringUtils.isNotBlank(username)||!StringUtils.isNotBlank(password)){
 			infoMap.put("registerInfo", "用户名或者密码不能为空");
 			return JSON.toJSONString(infoMap);
@@ -197,6 +200,9 @@ public class LoginController {
 			SimpleHash simpleHash = new SimpleHash("MD5", password, salt, 1);  
 			userdo.setAccountNo(username);
 			userdo.setPassword(simpleHash.toString());
+			userdo.setMobilePhono(phone);
+			userdo.setEmail(email);
+			userdo.setCreateTime(DateFormatUtils.format(new Date(), "yyyyMMddHHmmss"));
 			int flag=userService.registerNewUser(userdo);
 			if(flag!=1)infoMap.put("registerInfo", "注册发生异常");
 			return JSON.toJSONString(infoMap);

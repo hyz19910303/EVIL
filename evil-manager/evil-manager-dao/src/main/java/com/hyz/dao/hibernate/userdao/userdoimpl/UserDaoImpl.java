@@ -29,13 +29,14 @@ public class UserDaoImpl implements UserDao {
 	public int insertByselective(UserDO userdo) {
 		String sql="insert into tbl_user(userId,accountNo,password,salt) values(?,?,?,?)";
 		SQLQuery createSQLQuery = sessionfactory.getCurrentSession().createSQLQuery(sql);
-		//sessionfactory.getCurrentSession().save(userdo);
-		createSQLQuery.setString(0, userdo.getUserId());
-		createSQLQuery.setString(1, userdo.getAccountNo());
-		createSQLQuery.setString(2, userdo.getPassword());
-		createSQLQuery.setString(3, userdo.getSalt());
+		sessionfactory.getCurrentSession().save(userdo);
+//		createSQLQuery.setString(0, userdo.getUserId());
+//		createSQLQuery.setString(1, userdo.getAccountNo());
+//		createSQLQuery.setString(2, userdo.getPassword());
+//		createSQLQuery.setString(3, userdo.getSalt());
 //		sessionfactory.getCurrentSession().
-		return createSQLQuery.executeUpdate();
+//		return createSQLQuery.executeUpdate();
+		return 1;
 	}
 
 }

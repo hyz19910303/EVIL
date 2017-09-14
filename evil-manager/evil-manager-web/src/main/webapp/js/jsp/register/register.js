@@ -127,14 +127,15 @@ function formSubmit(){
 				type:"post",
 				beforeSend:function(xhr){
 					$("#warn_msg_login").html("登入中...");
-					$("#login_btn").addClass('layui-btn-disabled').unbind();
+					$("#login_btn").addClass('layui-btn-disabled').hide();
 				},
 				success:function(data){
 					if(!data.login_err_msg){
 						window.location.href=localhostPath+projectName;
 					}else{
-						$("#login_btn").removeClass('layui-btn-disabled').bind('submit');
+						$("#login_btn").removeClass('layui-btn-disabled').show();
 						$("#warn_msg_login").html(data.login_err_msg);
+						$("#verifyCode").attr({'src':projectName+"/verifyCode?_="+new Date().getTime()});
 					}
 				},
 				error:function(e){

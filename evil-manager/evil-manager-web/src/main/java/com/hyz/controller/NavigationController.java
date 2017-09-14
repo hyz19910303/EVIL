@@ -55,6 +55,11 @@ public class NavigationController {
 	public String login() {
 		return "login/login";
 	}
+	@RequestMapping("/content")
+	public String content() {
+		return "content/addContent";
+	}
+	
 }
 
 

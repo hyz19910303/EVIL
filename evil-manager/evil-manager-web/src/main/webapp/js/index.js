@@ -34,7 +34,7 @@ function bingEvent(event,result){
 			childl.css("display",result);
 		}
 		var childSpan=$(this).find("span");
-		var len=$($(this).children("a")[0]).text().trim().length;
+		var len=$($(this).children("a")[0]).text().trim().replace("/","").length;
 		if(childSpan.length!=0){
 			childSpan.css("display",result);
 		}else{

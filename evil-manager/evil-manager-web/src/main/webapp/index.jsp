@@ -23,7 +23,7 @@
 		<div class="evil-logo">LOGO</div>
 		<ul class="evil-nav evil-layout-left">
 			<li class="evil-nav-item" style="font-family: cursive;padding-top: 6px">
-				<a href="javascript:void(0);">控制台</a>
+				<a href="content">控制台</a>
 			</li>
 			<li class="evil-nav-item" style="padding-top: 6px">
 				<a href="javascript:void(0);" style="margin-top: 0px">控制台</a>
@@ -38,10 +38,10 @@
 		<ul class="evil-nav evil-layout-right">
 			<li class="evil-nav-item">
 				<a href="javascript:void(0);" style="font-size: 14px;">
-					<img alt="" src="image/spack.png" class="evil-nav-img" >
+					<img alt="" src="image/spack.png" class="evil-nav-img" style="margin-top: 10px" >
 					管理员
 				</a>
-				 <dl class="evil-nav-child evil-anim evil-anim-upbit" >
+				 <dl class="evil-nav-child evil-anim evil-anim-upbit" style="margin-top: 5px" >
 		          <dd><a href="" style="font-size: 14px">基本资料</a></dd>
 		          <dd><a href="" style="font-size: 14px">安全设置</a></dd>
 		          <dd><a href="" style="font-size: 14px">退出</a></dd>
@@ -49,12 +49,7 @@
 			</li>
 			<li class="evil-nav-item">
 				<a href="register"  style="font-size: 14px;padding-top: 15px">
-					注册
-				</a>
-			</li>
-			<li class="evil-nav-item">
-				<a href="javascript:void(0);" style="font-size: 14px;padding-top: 15px">
-					登入
+					注册/登入
 				</a>
 			</li>
 		</ul>
