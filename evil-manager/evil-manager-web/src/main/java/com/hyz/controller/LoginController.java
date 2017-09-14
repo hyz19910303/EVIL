@@ -40,6 +40,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.alibaba.fastjson.JSON;
 import com.beust.jcommander.internal.Maps;
 import com.hyz.evil.util.GenelateRandomNumberUtil;
+import com.hyz.exception.IPForbitException;
 import com.hyz.pojo.UserDO;
 import com.hyz.service.roleservice.RoleService;
 import com.hyz.service.userservice.UserService;
@@ -127,6 +128,8 @@ public class LoginController {
 			errMap.put("login_err_msg", "用户名不存在");
 		}catch(LockedAccountException e){//账号锁定
 			errMap.put("login_err_msg", "账号已经锁定");
+		}catch(IPForbitException e) {
+			errMap.put("login_err_msg", "ip地址禁止访问");
 		}catch(ExcessiveAttemptsException e){//尝试次数过多
 			errMap.put("login_err_msg", "尝试次数过多");
 		}catch(IncorrectCredentialsException e){//错误的凭证
@@ -134,6 +137,7 @@ public class LoginController {
 		}catch(ConcurrentAccessException e){
 			errMap.put("login_err_msg", "用户已经登入");
 		}catch (AuthenticationException e) {
+			e.printStackTrace();
 			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次");
 		}
 		//验证是否合法

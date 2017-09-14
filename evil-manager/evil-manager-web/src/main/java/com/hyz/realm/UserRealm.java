@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import javax.swing.plaf.synth.SynthSpinnerUI;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -30,6 +32,7 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hyz.evil.util.MD5Util;
+import com.hyz.exception.IPForbitException;
 import com.hyz.pojo.PermissionDO;
 import com.hyz.pojo.UserDO;
 import com.hyz.service.permissionservice.PermissionService;
@@ -48,8 +51,14 @@ public class UserRealm extends AuthorizingRealm{
 	
 	private Cache<String, AtomicInteger> shiroCacheManager;
 	
-	private CredentialsMatcher credentialsMatcher=super.getCredentialsMatcher();
+	private CredentialsMatcher credentialsMatcher;//=super.getCredentialsMatcher();
 	
+	
+	public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
+		this.credentialsMatcher = credentialsMatcher;
+	}
+
+
 	public void setShiroCacheManager(CacheManager CacheManager) {
 		this.shiroCacheManager = CacheManager.getCache("passwordRetryCache");
 	}
@@ -85,41 +94,22 @@ public class UserRealm extends AuthorizingRealm{
 		if(user==null){
 			throw new UnknownAccountException();
 		}
-		//缓存
-//		AtomicInteger  atomicinteger  = shiroCacheManager.get(useraccount);
-//		if (atomicinteger == null) {  
-//			atomicinteger = new AtomicInteger(0);  
-//			shiroCacheManager.put(useraccount, atomicinteger);  
-//        }  
-//		//尝试次数过多
-//		if(atomicinteger.incrementAndGet()>5){
-//			throw new ExcessiveAttemptsException();
-//		}
 		//账户锁定
 		if("1".equals(user.getLockStatus())){
 			throw new LockedAccountException();
 		}
-		//一个账户同一个时刻只能一个地方登入
-//		DefaultWebSecurityManager securityManager = (DefaultWebSecurityManager) SecurityUtils.getSecurityManager();
-//		DefaultWebSessionManager sessionManager = (DefaultWebSessionManager)securityManager.getSessionManager();
-//		Collection<Session> activeSessions = sessionManager.getSessionDAO().getActiveSessions();
-//		for (Session session : activeSessions) {
-//			UserDO udo=(UserDO) session.getAttribute("user");
-//			if(useraccount.equals(udo.getAccountNo())){
-//				sessionManager.getSessionDAO().delete(session); 
-//			}
-//		}
 		if(user.getAllowIps()!=null){
 			String[] ips = user.getAllowIps().split(",");
 			if(Arrays.asList(ips).contains(host)){
-				return null;
+				throw new IPForbitException();
 			}
 		}
-		String principal=user.getAccountNo();
-		String hashedCredentials=user.getPassword();
-		ByteSource credentialsSalt=ByteSource.Util.bytes(user.getSalt());
-		SimpleAuthenticationInfo authenticationInfo= new SimpleAuthenticationInfo(principal,hashedCredentials,credentialsSalt,getName());
-		credentialsMatcher.doCredentialsMatch(token,authenticationInfo);
+		String account=user.getAccountNo();
+		String password=user.getPassword();
+		ByteSource Salt=ByteSource.Util.bytes(user.getSalt());
+		SimpleAuthenticationInfo authenticationInfo= new SimpleAuthenticationInfo(account,password,Salt,getName());
+		boolean doCredentialsMatch = credentialsMatcher.doCredentialsMatch(token,authenticationInfo);
+		System.out.println(doCredentialsMatch);
 		return authenticationInfo;
 		
 	}
@@ -133,6 +123,7 @@ public class UserRealm extends AuthorizingRealm{
                 salt, hashIterations);  
         System.out.println("加密后的值-->" + simpleHash.toString()); 
         String md5encrypt = new Md5Hash(credentials,salt,1).toString();
+        System.out.println(md5encrypt);
         try {
 			System.out.println(MD5Util.MD5encrypt("123"));
 		} catch (NoSuchAlgorithmException e) {
