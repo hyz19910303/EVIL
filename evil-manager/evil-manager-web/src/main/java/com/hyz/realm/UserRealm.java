@@ -2,16 +2,13 @@ package com.hyz.realm;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
-import org.apache.shiro.authc.ExcessiveAttemptsException;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -24,11 +21,8 @@ import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.realm.AuthorizingRealm;
-import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.hyz.evil.util.MD5Util;
@@ -57,6 +51,11 @@ public class UserRealm extends AuthorizingRealm{
 	public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
 		this.credentialsMatcher = credentialsMatcher;
 	}
+	@Override
+	public CredentialsMatcher getCredentialsMatcher() {
+		return credentialsMatcher;
+	}
+
 
 
 	public void setShiroCacheManager(CacheManager CacheManager) {
@@ -104,13 +103,20 @@ public class UserRealm extends AuthorizingRealm{
 				throw new IPForbitException();
 			}
 		}
+		//设置登入的地址
+		user.setAddress(host);
 		String account=user.getAccountNo();
 		String password=user.getPassword();
 		ByteSource Salt=ByteSource.Util.bytes(user.getSalt());
 		SimpleAuthenticationInfo authenticationInfo= new SimpleAuthenticationInfo(account,password,Salt,getName());
-		boolean doCredentialsMatch = credentialsMatcher.doCredentialsMatch(token,authenticationInfo);
-		System.out.println(doCredentialsMatch);
-		return authenticationInfo;
+		boolean CredentialsMatch = credentialsMatcher.doCredentialsMatch(token,authenticationInfo);
+		//用户名密码正确
+		if(CredentialsMatch) {
+			SecurityUtils.getSubject().getSession().setAttribute("user", user);
+			return authenticationInfo;
+		}else {
+			throw new IncorrectCredentialsException();
+		}
 		
 	}
 	

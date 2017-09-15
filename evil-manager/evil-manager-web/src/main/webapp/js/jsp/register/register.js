@@ -127,13 +127,13 @@ function formSubmit(){
 				type:"post",
 				beforeSend:function(xhr){
 					$("#warn_msg_login").html("登入中...");
-					$("#login_btn").addClass('layui-btn-disabled').hide();
+					$("#login_btn").addClass('layui-btn-disabled').attr('disabled','disabled');
 				},
 				success:function(data){
-					if(!data.login_err_msg){
+					if(data.login_succ_msg){
 						window.location.href=localhostPath+projectName;
 					}else{
-						$("#login_btn").removeClass('layui-btn-disabled').show();
+						$("#login_btn").removeClass('layui-btn-disabled').removeAttr('disabled');
 						$("#warn_msg_login").html(data.login_err_msg);
 						$("#verifyCode").attr({'src':projectName+"/verifyCode?_="+new Date().getTime()});
 					}
@@ -155,7 +155,7 @@ function formSubmit(){
 					$("#register_btn").hide();
 				},
 				success:function(data){
-					if(!data.registerInfo){
+					if(data.registerInfo_success){
 						window.location.href=localhostPath+projectName;
 					}else{
 						$("#warn_msg_register").html(data.registerInfo);
@@ -182,14 +182,6 @@ function GetItems(fieldArr){
 		}
 	});
 	return o;
-}
-function bindLoginAndRejister(){
-	$("login_btn").on('click',function(){
-		submit_login("loginForm","/Sys/login");
-	});
-	$("register_btn").on('click',function(){
-		submit_login("registerForm","/Sys/register");
-	});
 }
 function  submit_login(id,uri){
 	var fieldElem = $("#"+id).find('input,select,checkbox') 

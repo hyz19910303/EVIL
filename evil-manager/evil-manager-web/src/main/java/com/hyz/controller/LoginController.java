@@ -110,7 +110,6 @@ public class LoginController {
 		try {
 			token = new UsernamePasswordToken(username,password,remeberFlag,remoteHost);
 			subject = SecurityUtils.getSubject();
-			subject.login(token);
 			//缓存
 			Cache<String, AtomicInteger> shiroCacheManager = cachemanager.getCache("passwordRetryCache");
 			atomicinteger= shiroCacheManager.get(username);
@@ -124,6 +123,7 @@ public class LoginController {
 				//TO-DO 
 				throw new ExcessiveAttemptsException();
 			}
+			subject.login(token);
 		}catch(UnknownAccountException e){//未知账户
 			errMap.put("login_err_msg", "用户名不存在");
 		}catch(LockedAccountException e){//账号锁定
@@ -133,12 +133,12 @@ public class LoginController {
 		}catch(ExcessiveAttemptsException e){//尝试次数过多
 			errMap.put("login_err_msg", "尝试次数过多");
 		}catch(IncorrectCredentialsException e){//错误的凭证
-			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次");
+			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次机会");
 		}catch(ConcurrentAccessException e){
 			errMap.put("login_err_msg", "用户已经登入");
 		}catch (AuthenticationException e) {
 			e.printStackTrace();
-			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次");
+			errMap.put("login_err_msg", "用户名或者密码错误,还剩下"+(5-atomicinteger.get())+"次机会");
 		}
 		//验证是否合法
 		if(subject.isAuthenticated()){
@@ -160,11 +160,6 @@ public class LoginController {
 						sessionManager.getSessionDAO().delete(session_shiro); 
 					}
 				}
-				UserDO userDo = userService.login(username);
-				//设置ip地址  防止同一地点2次连续登入
-				userDo.setAddress(remoteHost);
-				Session session_ = subject.getSession();
-				session_.setAttribute("user", userDo);
 				errMap.put("login_succ_msg", "success");
 				 
 			}catch (Exception e) {
@@ -173,11 +168,9 @@ public class LoginController {
 			finally {
 				lock.unlock();
 			}
-//			return ":/Sys/success.do";
 		}else{
 			token.clear();
 		}
-		//return "redirect:/index.jsp";
 		return JSON.toJSONString(errMap);
 	}
 	
@@ -189,12 +182,13 @@ public class LoginController {
 	@ResponseBody
 	public String register(@RequestParam(name="username",required=true) String username,@RequestParam(name="password",required=true) String password,@RequestParam(name="confirm_password",required=true) String confirm_password,@RequestParam(name="phone",required=false)String phone,@RequestParam(name="email",required=false)String email){
 		Map<String,String> infoMap= Maps.newHashMap();
+		String msgkey="registerInfo_error";
 		if(!password.equals(confirm_password)) {
-			infoMap.put("registerInfo", "2次密码不一致");
+			infoMap.put(msgkey, "2次密码不一致");
 			return JSON.toJSONString(infoMap);
 		}
 		if(!StringUtils.isNotBlank(username)||!StringUtils.isNotBlank(password)){
-			infoMap.put("registerInfo", "用户名或者密码不能为空");
+			infoMap.put(msgkey, "用户名或者密码不能为空");
 			return JSON.toJSONString(infoMap);
 		}
 		UserDO  userdo = new UserDO();
@@ -208,14 +202,15 @@ public class LoginController {
 			userdo.setEmail(email);
 			userdo.setCreateTime(DateFormatUtils.format(new Date(), "yyyyMMddHHmmss"));
 			int flag=userService.registerNewUser(userdo);
-			if(flag!=1)infoMap.put("registerInfo", "注册发生异常");
-			return JSON.toJSONString(infoMap);
+			if(flag!=1) {
+				msgkey="registerInfo_success";
+			}
+			return JSON.toJSONString(infoMap.put(msgkey, "success"));
 		} catch (Exception e) {
 			e.printStackTrace();
-			infoMap.put("registerInfo", "注册发生异常");
+			infoMap.put(msgkey, "注册发生异常");
 			return JSON.toJSONString(infoMap);
 		}
-		//return "login/welcome";
 	}
 	
 	@RequestMapping("/logout.do")

@@ -288,9 +288,8 @@ layui.define(['layer', 'form'], function(exports){
       //删除原有位置的内容
       //range.deleteContents();
       
-      //range.startOffset=range.endOffset;
       range.insertNode(elem);
-      $("body").getSelection().focus();
+     
     }
   }
   
