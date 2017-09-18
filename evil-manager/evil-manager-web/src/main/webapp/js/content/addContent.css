@@ -1,0 +1,21 @@
+@charset "UTF-8";
+.evil-li{
+	cursor: pointer;
+	/* border-radius: 20px; */
+	border-bottom-right-radius:20px;
+	border-top-right-radius:20px;
+	height: 40px;
+	width: 200px;
+	box-sizing: border-box;
+	font-size: 15px;
+	text-align:center;
+	line-height: 40px;
+	vertical-align: middle;
+}
+.evil-span{
+	position: absolute;text-align: center;overflow: hidden;padding-left: 50px;
+}
+.evil-input-new{
+	width:100px;
+	height:25px;
+}

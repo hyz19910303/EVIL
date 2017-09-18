@@ -10,6 +10,7 @@
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/jQuery/jquery-3.2.1.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/layui/layui.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/vue/vue.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/ztree//js/jquery.ztree.all.js"></script>
 <script type="text/javascript">
 	var path="${pageContext.servletContext.contextPath }";
 	//当前的全部路径

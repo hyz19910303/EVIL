@@ -1,8 +1,99 @@
 //页面加载后初始化
 $(function(){
+//	TreeInit();
+	LeftNavitationInit();
+	cursorInit();
 	Pageinit();
 });
 
+function LeftNavitationInit(){
+	var ul=$("#navigation").find("ul");
+	$(ul).each(function(ulIndex,ulItem){
+		var li=$(ulItem).find("li");
+		$(li).each(function(liIndex,liItem){
+			$(liItem).on("mouseover mouseout click",function(e){
+				if(e.type=='mouseover'){
+					$(this).css({'background-color':'#bab7b7','border':'1px solid'});
+				}else if(e.type=='mouseout'){
+					$(this).css({'background-color':'white','border':'0px solid'});
+				}else if(e.type=='click'){
+					$("#background").css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
+				}
+			});
+//				var top=$("#background").css("top");
+//				var index=top.substring(0,top.length-2);
+//				if(index<liIndex*40){
+//					for(;index<=liIndex*40;index++){
+//						setTimeout(function(){
+//							$("#background").css({'background-color':'red','top':index+'px','border':'1px solid'});
+//						},200);
+//					}
+//				}else{
+//					for(;index>=liIndex*40;index--){
+//						setTimeout(function(){
+//							$("#background").css({'background-color':'red','top':index+'px','border':'1px solid'});
+//						},200)
+//					}
+//				}
+		});
+	});
+}
+function cursorInit(){
+	var btn_li=$("#new_btn").find('li');
+	$(btn_li).each(function(index,item){
+			$(this).on('mouseover mouseout click',function(e){
+				if(e.type=='mouseover'){
+					$(this).css({'background-color':'#deb887','border':'1px solid'});
+				}else if(e.type=='mouseout'){
+					$(this).css({'background-color':'#fff','border':'0px solid'});
+				}else if(e.type=='click' && $(this).val()==2){
+//					confirm("确定");
+//					var name=prompt("请输入类别名称");
+					var mar_top=$(this).parent('ul').css('margin-top');
+					var num_mar_top=parseInt(mar_top.substring(0,mar_top.length-2))+40;
+					$(this).parent('ul').css('margin-top',num_mar_top+"px");
+					var module="<li class='evil-li'>";
+					module+="<a>";
+					module+="<span class='evil-span'>";
+					module+="<input class='evil-input-new' value='请修改类别名称'>" ;
+					module+="</span>";
+					module+="</a>";
+					module+="</li>";
+					$(module).appendTo($("#navigation").find("ul"));
+					$(".evil-input-new").focus();
+					$(".evil-input-new").blur(function(e){
+						var title_val=$(this).val();
+						$("#navigation").find(".evil-li").last().remove(".evil-input-new").find('span').val(title_val);
+						//刷新
+						LeftNavitationInit();
+					});
+				}
+			});
+	});
+}
+/**
+ * 
+ * <p>MethodName: TreeInit</p>
+ * <p>Description: 左侧树导航</p>
+ * @returns
+ * 
+ * @example
+ *
+ * @author EVIL
+ * @date 2017年9月17日
+ * @version 1.0
+ * Create At 2017年9月17日 下午6:05:20
+ */
+function TreeInit(){
+	var setting={};
+	var zNodes=[
+		   {name:"test1", open:true, children:[
+			      {name:"test1_1"}, {name:"test1_2"}]},
+			   {name:"test2", open:true, children:[
+			      {name:"test2_1"}, {name:"test2_2"}]}
+			   ];
+	var zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
+}
 /**
  * 
  * <p>MethodName: Pageinit</p>
@@ -22,9 +113,9 @@ function Pageinit(){
 			var layedit = layui.layedit;
 			var upload = layui.upload;
 			//监听导航点击
-			element.on('nav(demo)', function(elem){
-				layer.msg(elem.text());
-			});
+//			element.on('nav(demo)', function(elem){
+//				layer.msg(elem.text());
+//			});
 			
 			//富文本编辑器
 			var index=layedit.build('LAY_demo1', {
