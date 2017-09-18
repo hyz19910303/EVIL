@@ -22,7 +22,7 @@
 .evil-book{
 	display: inline-block;
 	position: absolute;
-	margin-left: 200px;
+	margin-left: 210px;
 	width: 200px;
 	height: 40px;
 }
@@ -36,5 +36,5 @@
 	text-align:center;
 	line-height: 40px;
 	vertical-align: middle;
-	background-color: graytext;
+	background-color: #bfda55;
 }

@@ -37,13 +37,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="evil-book">
+		<div class="evil-book" oncontextmenu="rightClick();">
 			<ul >
 				<li class="evil-book-li"><a><span class="evil-span">书架</span></a></li>
 			</ul>
 		</div>
 		<div style="display: inline-block;width: 1200px">
-			<div style="padding-left: 410px">
+			<div style="padding-left: 420px">
 				<textarea class="layui-textarea" id="LAY_demo1" style="display: none" >  
 				</textarea>
 			</div>
