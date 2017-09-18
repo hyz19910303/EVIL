@@ -6,18 +6,25 @@ $(function(){
 	Pageinit();
 });
 
+function rightClick(e){
+//	屏蔽右键点击
+	window.event.returnValue=false; 
+	return false;
+}
 function LeftNavitationInit(){
 	var ul=$("#navigation").find("ul");
 	$(ul).each(function(ulIndex,ulItem){
 		var li=$(ulItem).find("li");
 		$(li).each(function(liIndex,liItem){
-			$(liItem).on("mouseover mouseout click",function(e){
+			$(liItem).on("mouseover mouseout click contextmenu",function(e){
 				if(e.type=='mouseover'){
 					$(this).css({'background-color':'#bab7b7','border':'1px solid'});
 				}else if(e.type=='mouseout'){
 					$(this).css({'background-color':'white','border':'0px solid'});
 				}else if(e.type=='click'){
 					$("#background").css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
+				}else if(e.type=='contextmenu'){
+					console.log($(liItem).html());
 				}
 			});
 //				var top=$("#background").css("top");
@@ -63,7 +70,8 @@ function cursorInit(){
 					$(".evil-input-new").focus();
 					$(".evil-input-new").blur(function(e){
 						var title_val=$(this).val();
-						$("#navigation").find(".evil-li").last().remove(".evil-input-new").find('span').val(title_val);
+//						LeftNavitationInit();
+						$("#navigation").find(".evil-li").last().find('span').html(title_val);
 						//刷新
 						LeftNavitationInit();
 					});

@@ -12,10 +12,10 @@
 <title>新增</title>
 </head>
 <body>
-		<div id="navigation" style="display: inline-block;position: absolute;">
+		<div id="navigation" style="display: inline-block;position: absolute;" oncontextmenu="rightClick();">
 			<ul >
 				<div id="background" style="position: absolute;overflow: hidden;width: 200px;height: 40px;border-radius:0 20px 20px 0;background-color: beige;"></div>
-				<li class="evil-li">
+				<li class="evil-li" >
 					<a >
 						<span class="evil-span">日记</span>
 					</a>
@@ -29,18 +29,21 @@
 		</div>
 		<div>
 			<ul id="new_btn" style="position: absolute;margin-top: 82px">
+				<li class="evil-li">
+					<a ><span class="evil-span">回收站</span></a>
+				</li>
 				<li  class="evil-li" value="2">
 					<a><span style="padding-left: 50px;position: absolute;">新建</span></a>
 				</li>
-				<li class="evil-li">
-					<a >
-						<span class="evil-span">回收站</span>
-					</a>
-				</li>
+			</ul>
+		</div>
+		<div class="evil-book">
+			<ul >
+				<li class="evil-book-li"><a><span class="evil-span">书架</span></a></li>
 			</ul>
 		</div>
 		<div style="display: inline-block;width: 1200px">
-			<div style="padding-left: 210px">
+			<div style="padding-left: 410px">
 				<textarea class="layui-textarea" id="LAY_demo1" style="display: none" >  
 				</textarea>
 			</div>
