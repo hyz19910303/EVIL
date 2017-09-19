@@ -1,9 +1,13 @@
 package com.hyz.controller;
 
+
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.hyz.dao.hibernate.userdao.UserDao;
 import com.hyz.pojo.Content;
 import com.hyz.service.content.ContentService;
 
@@ -27,7 +31,8 @@ public class ContentController {
 	private ContentService contentService;
 	
 	@RequestMapping("/save")
-	public String saveContent(Content c) {
+	public String saveContent(Content c,HttpSession session) {
+		UserDao user=(UserDao) session.getAttribute("user");
 		return contentService.saveContent(c);
 	}
 }
