@@ -24,7 +24,12 @@ function LeftNavitationInit(){
 				}else if(e.type=='click'){
 					$("#background").css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
 				}else if(e.type=='contextmenu'){
-					console.log($(liItem).html());
+					var rightClickTemp="<div class='evil-rightclick-temp'>";
+					rightClickTemp+="<div class='evil-rightclick-inner'></div>";		
+					rightClickTemp+="<div/>";
+					$(rightClickTemp).appendTo($(this));
+					//html(rightClickTemp);
+					//console.log($(liItem).html());
 				}
 			});
 //				var top=$("#background").css("top");

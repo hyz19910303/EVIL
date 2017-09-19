@@ -40,5 +40,20 @@
 }
 .evil-book-li a{
 	text-align: right;
-	
+}
+.evil-rightclick-temp{
+	position: absolute;display: inline-block;background-color: blue;
+	height: 40px;
+	width: 160px;
+	margin-left: 160px;
+	border-radius: 20px 0 0 20px;
+	z-index: -1;
+	/* box-shadow: 15px 15px 0 0 green; */
+}
+.evil-rightclick-inner{
+	height: 40px;
+	width: 40px;
+	border-radius:50%;
+	float: left;
+	background-color: white;
 }
