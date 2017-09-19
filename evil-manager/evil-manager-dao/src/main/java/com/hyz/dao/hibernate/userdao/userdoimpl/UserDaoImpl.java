@@ -1,12 +1,9 @@
 package com.hyz.dao.hibernate.userdao.userdoimpl;
 
-import java.io.Serializable;
-
 import org.hibernate.SQLQuery;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.hyz.dao.hibernate.userdao.UserDao;
 import com.hyz.pojo.UserDO;
