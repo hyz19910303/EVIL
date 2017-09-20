@@ -25,8 +25,10 @@ function LeftNavitationInit(){
 					$("#background").css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
 				}else if(e.type=='contextmenu'){
 					var rightClickTemp="<div class='evil-rightclick-temp'>";
-					rightClickTemp+="<div class='evil-rightclick-inner'></div>";		
-					rightClickTemp+="<div/>";
+						rightClickTemp+="<div class='evil-rightclick-inner'>";
+						rightClickTemp+="<div class='evil-del-btn'>修改</div>";		
+						rightClickTemp+="</div>";		
+						rightClickTemp+="<div/>";
 					$(rightClickTemp).appendTo($(this));
 					//html(rightClickTemp);
 					//console.log($(liItem).html());

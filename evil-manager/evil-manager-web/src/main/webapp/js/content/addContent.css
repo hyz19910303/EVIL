@@ -11,6 +11,7 @@
 	text-align:center;
 	line-height: 40px;
 	vertical-align: middle;
+	z-index: 1;
 }
 .evil-span{
 	position: absolute;text-align: center;overflow: hidden;padding-left: 50px;
@@ -37,17 +38,18 @@
 	line-height: 40px;
 	vertical-align: middle;
 	background-color: #bfda55;
+	
 }
 .evil-book-li a{
 	text-align: right;
 }
 .evil-rightclick-temp{
-	position: absolute;display: inline-block;background-color: blue;
+	position: absolute;display: inline-block;background-color: #87c837;
 	height: 40px;
 	width: 160px;
 	margin-left: 160px;
 	border-radius: 20px 0 0 20px;
-	z-index: -1;
+	
 	/* box-shadow: 15px 15px 0 0 green; */
 }
 .evil-rightclick-inner{
@@ -56,4 +58,15 @@
 	border-radius:50%;
 	float: left;
 	background-color: white;
+}
+.evil-del-btn{
+	width: 50px;
+	height: 30px;
+	background-color: brown;
+	margin-left: 50px;
+	vertical-align: middle;
+	margin-top: 5px;
+	border-radius: 5px;
+	line-height: 30px;
+	cursor: pointer;
 }
