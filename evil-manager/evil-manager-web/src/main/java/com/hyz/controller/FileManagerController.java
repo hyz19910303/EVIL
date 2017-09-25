@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.common.collect.Maps;
 import com.hyz.service.Excel.ExcelService;
 
 import sun.misc.Unsafe;
@@ -73,12 +74,14 @@ public class FileManagerController {
 	
 	@RequestMapping(value="/fileUpload",produces="application/json;charset=utf-8")
 	@ResponseBody
-	public String fileUpload(HttpServletRequest request){
+	public Map<String,String> fileUpload(HttpServletRequest request){
+		HashMap<String, String> newHashMap = Maps.newHashMap();
 		DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 		diskFileItemFactory.setSizeThreshold(100*1024);//文件上传大小
 		ServletFileUpload fileUpload = new ServletFileUpload(diskFileItemFactory);
 		if(!ServletFileUpload.isMultipartContent(request)){
-			return "fail";
+			newHashMap.put("flag", "fail");
+			return newHashMap;
 		}
 		fileUpload.setHeaderEncoding("UTF-8");
 		fileUpload.setFileSizeMax(10*1024*100000);//单个文件上传的大小
@@ -103,15 +106,14 @@ public class FileManagerController {
 					excelService.parseExcel(realPath+File.separator+URLEncoder.encode(fileName, "UTF-8"));
 				}
 			}
-			
-			
+			newHashMap.put("flag", "success");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "fail";
+			newHashMap.put("flag", "fail");
 		}
 		//ProgressListener progressListener = fileUpload.getProgressListener();
 		//progressListener.update(pBytesRead, pContentLength, pItems);
-		return "success";
+		return newHashMap;
 	}
 	
 }

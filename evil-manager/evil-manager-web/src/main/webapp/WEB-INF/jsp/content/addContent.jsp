@@ -16,24 +16,31 @@
 			<ul >
 				<div id="background" style="position: absolute;overflow: hidden;width: 200px;height: 40px;border-radius:0 20px 20px 0;background-color: beige;"></div>
 				<li class="evil-li" >
-					<a >
-						<span class="evil-span">日记</span>
-					</a>
+					<div class="evil-div" >
+						<a >
+							<span class="evil-span">日记</span>
+						</a>
+					</div>
 				</li>
 				<li class="evil-li">
-					<a >
-						<span class="evil-span">随笔</span>
-					</a>
+					<div class="evil-div" >
+						<a >
+							<span class="evil-span">随笔</span>
+						</a>
+					</div>
 				</li>
 			</ul>
 		</div>
 		<div>
-			<ul id="new_btn" style="position: absolute;margin-top: 82px">
+			<ul id="new_btn" style="position: absolute;">
+				<div id="background_1" hidden="true" style="position: absolute;overflow: hidden;width: 200px;height: 40px;border-radius:0 20px 20px 0;background-color: beige;"></div>
 				<li class="evil-li">
-					<a ><span class="evil-span">回收站</span></a>
+					<div class="evil-div">
+						<a ><span class="evil-span">回收站</span></a>
+					</div>
 				</li>
 				<li  class="evil-li" value="2">
-					<a><span style="padding-left: 50px;position: absolute;">新建</span></a>
+					<div class="evil-div"><a><span style="padding-left: 50px;position: absolute;">新建</span></a></div>
 				</li>
 			</ul>
 		</div>

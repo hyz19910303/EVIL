@@ -1,4 +1,6 @@
 //页面加载后初始化
+var display_flag=1;
+var edit_flag=false;
 $(function(){
 //	TreeInit();
 	LeftNavitationInit();
@@ -11,7 +13,7 @@ function rightClick(e){
 	window.event.returnValue=false; 
 	return false;
 }
-function LeftNavitationInit(){
+function LeftNavitationInit(edit_flag){
 	var ul=$("#navigation").find("ul");
 	$(ul).each(function(ulIndex,ulItem){
 		var li=$(ulItem).find("li");
@@ -22,16 +24,31 @@ function LeftNavitationInit(){
 				}else if(e.type=='mouseout'){
 					$(this).css({'background-color':'white','border':'0px solid'});
 				}else if(e.type=='click'){
-					$("#background").css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
-				}else if(e.type=='contextmenu'){
-					var rightClickTemp="<div class='evil-rightclick-temp'>";
+					$("#background").show().css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
+					$("#background_1").hide();
+					display_flag=1;
+				}
+				else if(e.type=='contextmenu'){
+					var temp=$(liItem).find('.evil-rightclick-temp');
+					if(temp.length!=0){
+						//var edit_btn=$(".evil-rightclick-temp").first();
+						if(edit_flag){
+							temp.show();
+							edit_flag=false;
+						}else{
+							temp.hide();
+							edit_flag=true;
+						}
+					}else{
+						var rightClickTemp="<div class='evil-rightclick-temp'>";
 						rightClickTemp+="<div class='evil-rightclick-inner'>";
-						rightClickTemp+="<div class='evil-del-btn'>修改</div>";		
+						rightClickTemp+="<div class='evil-del-btn' onclick='editItem(this);'>修改</div>";		
+						rightClickTemp+="<div class='evil-edit-btn' onclick='deleteItem(this);'>删除</div>";		
 						rightClickTemp+="</div>";		
 						rightClickTemp+="<div/>";
-					$(rightClickTemp).appendTo($(this));
+						$(rightClickTemp).appendTo($(liItem));
+					}
 					//html(rightClickTemp);
-					//console.log($(liItem).html());
 				}
 			});
 //				var top=$("#background").css("top");
@@ -52,36 +69,76 @@ function LeftNavitationInit(){
 		});
 	});
 }
+//删除
+function deleteItem(item){
+	var parent_li=$(item).parents("li").remove();
+	
+	var var_li=$("#navigation").find("ul").find('li').unbind();
+	var li_length=var_li.length;
+	LeftNavitationInit(edit_flag);
+	$("#new_btn").css({'margin-top':li_length*40+2+'px'});
+}
+//编辑
+function editItem(item){
+	var parent_li=$(item).parents("li");
+	var span=$(parent_li).find('span');
+	var demo="<input class='evil-input-new' value='"+span.html()+"'>"; 
+	span.html(demo);
+	$(".evil-input-new").focus();
+	$(".evil-input-new").blur(function(e){
+		var title_val=$(this).val();
+//							LeftNavitationInit();
+		$(parent_li).find('span').html(title_val);
+		//解除绑定事件
+		$("#navigation").find("ul").find('li').unbind();
+		//刷新 重新绑定事件
+		LeftNavitationInit();
+	});
+}
 function cursorInit(){
-	var btn_li=$("#new_btn").find('li');
+	var btn_obj=$("#new_btn");
+	var li_length=$("#navigation").find("ul").find('li').length;
+	btn_obj.css({'margin-top':li_length*40+2+'px'});
+	var btn_li=btn_obj.find('li');
 	$(btn_li).each(function(index,item){
 			$(this).on('mouseover mouseout click',function(e){
 				if(e.type=='mouseover'){
 					$(this).css({'background-color':'#deb887','border':'1px solid'});
 				}else if(e.type=='mouseout'){
 					$(this).css({'background-color':'#fff','border':'0px solid'});
-				}else if(e.type=='click' && $(this).val()==2){
-//					confirm("确定");
-//					var name=prompt("请输入类别名称");
-					var mar_top=$(this).parent('ul').css('margin-top');
-					var num_mar_top=parseInt(mar_top.substring(0,mar_top.length-2))+40;
-					$(this).parent('ul').css('margin-top',num_mar_top+"px");
-					var module="<li class='evil-li'>";
-					module+="<a>";
-					module+="<span class='evil-span'>";
-					module+="<input class='evil-input-new' value='请修改类别名称'>" ;
-					module+="</span>";
-					module+="</a>";
-					module+="</li>";
-					$(module).appendTo($("#navigation").find("ul"));
-					$(".evil-input-new").focus();
-					$(".evil-input-new").blur(function(e){
-						var title_val=$(this).val();
-//						LeftNavitationInit();
-						$("#navigation").find(".evil-li").last().find('span').html(title_val);
-						//刷新
-						LeftNavitationInit();
-					});
+				}else if(e.type=='click'){
+					///新建
+					if($(this).val()==2){
+							var mar_top=$(this).parent('ul').css('margin-top');
+							var num_mar_top=parseInt(mar_top.substring(0,mar_top.length-2))+40;
+							$(this).parent('ul').css('margin-top',num_mar_top+"px");
+							var module="<li class='evil-li'>" ;
+							module+= "<div class='evil-div'>";
+							module+=  "<a>";
+							module+="	<span class='evil-span'>";
+							module+=		"<input class='evil-input-new' value='请修改类别名称'>" ;
+							module+="	</span>";
+							module+=  "</a>";
+							module+= "</div>";
+							module+="</li>";
+							$(module).appendTo($("#navigation").find("ul"));
+							$(".evil-input-new").focus();
+							$(".evil-input-new").blur(function(e){
+								var title_val=$(this).val();
+	//							LeftNavitationInit();
+								$("#navigation").find(".evil-li").last().find('span').html(title_val);
+								//解除绑定事件
+								$("#navigation").find("ul").find('li').unbind();
+								//刷新 重新绑定事件
+								LeftNavitationInit();
+							});
+					}else{
+//						var li_len=$("#navigation").find("ul").find('li').length;
+//						$("#background").css({'background-color':'beige','top':index*40+(li_len*40)+2+'px','border':'1px solid'});
+						$("#background_1").show().css({'background-color':'beige','top':index*40+'px','border':'1px solid'});
+						$("#background").hide();
+						display_flag=2;
+					}
 				}
 			});
 	});

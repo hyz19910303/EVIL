@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .evil-li{
-	cursor: pointer;
+	/* cursor: pointer; */
 	/* border-radius: 20px; */
 	border-bottom-right-radius:20px;
 	border-top-right-radius:20px;
@@ -12,6 +12,10 @@
 	line-height: 40px;
 	vertical-align: middle;
 	z-index: 1;
+}
+.evil-div{
+	width: 200px;height: 40px;display: flex;
+	cursor: pointer;position: absolute;
 }
 .evil-span{
 	position: absolute;text-align: center;overflow: hidden;padding-left: 50px;
@@ -44,23 +48,27 @@
 	text-align: right;
 }
 .evil-rightclick-temp{
-	position: absolute;display: inline-block;background-color: #87c837;
+	position: relative;
+	display: inline-block;background-color: #87c837;
 	height: 40px;
 	width: 160px;
 	margin-left: 160px;
 	border-radius: 20px 0 0 20px;
-	
+	z-index: 5;
+	/* border-bottom: 1px solid;
+	border-top: 1px solid;
+	border-right: 1px solid; */
 	/* box-shadow: 15px 15px 0 0 green; */
 }
 .evil-rightclick-inner{
 	height: 40px;
 	width: 40px;
-	border-radius:50%;
+	border-radius:0 50% 50% 0;
 	float: left;
-	background-color: white;
+	background-color: beige;
 }
 .evil-del-btn{
-	width: 50px;
+	width: 40px;
 	height: 30px;
 	background-color: brown;
 	margin-left: 50px;
@@ -69,4 +77,18 @@
 	border-radius: 5px;
 	line-height: 30px;
 	cursor: pointer;
+	display: inline-block;
+	position: absolute;
+}
+.evil-edit-btn{
+	width: 40px;
+	height: 30px;
+	background-color: brown;
+	margin-left: 100px;
+	vertical-align: middle;
+	/* margin-top: 5px; */
+	border-radius: 5px;
+	line-height: 30px;
+	cursor: pointer;
+	display: inline-block;
 }

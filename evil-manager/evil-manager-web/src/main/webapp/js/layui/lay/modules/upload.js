@@ -197,7 +197,7 @@ layui.define('layer' , function(exports){
           ,success: function(res){
             done(index, res);
           }
-          ,error: function(){
+          ,error: function(e){
             that.msg('请求上传接口出现异常');
             error(index);
           }
