@@ -25,6 +25,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.beust.jcommander.internal.Lists;
 import com.google.common.collect.Maps;
 import com.hyz.service.Excel.ExcelService;
 
@@ -74,8 +75,8 @@ public class FileManagerController {
 	
 	@RequestMapping(value="/fileUpload",produces="application/json;charset=utf-8")
 	@ResponseBody
-	public Map<String,String> fileUpload(HttpServletRequest request){
-		HashMap<String, String> newHashMap = Maps.newHashMap();
+	public Map<String,Object> fileUpload(HttpServletRequest request){
+		HashMap<String, Object> newHashMap = Maps.newHashMap();
 		DiskFileItemFactory diskFileItemFactory = new DiskFileItemFactory();
 		diskFileItemFactory.setSizeThreshold(100*1024);//文件上传大小
 		ServletFileUpload fileUpload = new ServletFileUpload(diskFileItemFactory);
@@ -95,18 +96,21 @@ public class FileManagerController {
 		try {
 		    List<FileItem> parseRequest = fileUpload.parseRequest(request);
 			//List<FileItem> list = parseParameterMap.get("image");
-			String realPath = request.getServletContext().getRealPath("/WEB-INF/files");
+		    String relativePath="/image/uploadImage";
+			String realPath = request.getServletContext().getRealPath(relativePath);
 			System.out.println(realPath);
+			List<String> ImageArr= Lists.newArrayList();
 			for (FileItem fileItem : parseRequest) {
 				fileItem.getOutputStream();
 				String fileName = fileItem.getName();
 				fileItem.write(new File(realPath+File.separator+fileName));
 				fileItem.delete();//删除临时文件 防止占用硬盘
-				if(fileName.endsWith(".xls") ||fileName.endsWith(".xlsx")) {
-					excelService.parseExcel(realPath+File.separator+URLEncoder.encode(fileName, "UTF-8"));
-				}
+				ImageArr.add(relativePath+File.separator+fileName);
+//				if(fileName.endsWith(".xls") ||fileName.endsWith(".xlsx")) {
+//					excelService.parseExcel(realPath+File.separator+URLEncoder.encode(fileName, "UTF-8"));
+//				}
 			}
-			newHashMap.put("flag", "success");
+			newHashMap.put("imagesURI", ImageArr);
 		} catch (Exception e) {
 			e.printStackTrace();
 			newHashMap.put("flag", "fail");

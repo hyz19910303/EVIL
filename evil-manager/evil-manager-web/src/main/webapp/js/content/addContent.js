@@ -1,11 +1,11 @@
+//右键点击事件变量
+var edit_flag=false;//
 //页面加载后初始化
-var display_flag=1;
-var edit_flag=false;
 $(function(){
 //	TreeInit();
 	LeftNavitationInit();
 	cursorInit();
-	Pageinit();
+	wangEditInit();
 });
 
 function rightClick(e){
@@ -13,6 +13,20 @@ function rightClick(e){
 	window.event.returnValue=false; 
 	return false;
 }
+/**
+ * 
+ * <p>MethodName: LeftNavitationInit</p>
+ * <p>Description: 左侧菜单类别代码</p>
+ * @param edit_flag
+ * @returns
+ * 
+ * @example
+ *
+ * @author EVIL
+ * @date 2017年9月26日
+ * @version 1.0
+ * Create At 2017年9月26日 上午9:03:28
+ */
 function LeftNavitationInit(edit_flag){
 	var ul=$("#navigation").find("ul");
 	$(ul).each(function(ulIndex,ulItem){
@@ -24,14 +38,24 @@ function LeftNavitationInit(edit_flag){
 				}else if(e.type=='mouseout'){
 					$(this).css({'background-color':'white','border':'0px solid'});
 				}else if(e.type=='click'){
-					$("#background").show().css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
+					//$("#background").show().css({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'});
+					$("#background").show().animate({'background-color':'beige','top':liIndex*40+'px','border':'1px solid'},"slow");
 					$("#background_1").hide();
-					display_flag=1;
+					//数据库读取 
+					// TO-DO
+					let li=$(liItem);
+					$("#evil-content-title").empty();
+					//模拟数据
+					let content_title="";
+					var arr=[{"title":"书架"},{"title":"实践论"},{"title":"死亡"}];
+					for ( var e in arr) {
+						content_title+="<li class='evil-book-li'><a ><span class='evil-span'>"+arr[e]['title']+"</span></a></li>"
+					}
+					$("#evil-content-title").hide().append($(content_title)).slideToggle("normal");
 				}
 				else if(e.type=='contextmenu'){
 					var temp=$(liItem).find('.evil-rightclick-temp');
 					if(temp.length!=0){
-						//var edit_btn=$(".evil-rightclick-temp").first();
 						if(edit_flag){
 							temp.show();
 							edit_flag=false;
@@ -48,24 +72,8 @@ function LeftNavitationInit(edit_flag){
 						rightClickTemp+="<div/>";
 						$(rightClickTemp).appendTo($(liItem));
 					}
-					//html(rightClickTemp);
 				}
 			});
-//				var top=$("#background").css("top");
-//				var index=top.substring(0,top.length-2);
-//				if(index<liIndex*40){
-//					for(;index<=liIndex*40;index++){
-//						setTimeout(function(){
-//							$("#background").css({'background-color':'red','top':index+'px','border':'1px solid'});
-//						},200);
-//					}
-//				}else{
-//					for(;index>=liIndex*40;index--){
-//						setTimeout(function(){
-//							$("#background").css({'background-color':'red','top':index+'px','border':'1px solid'});
-//						},200)
-//					}
-//				}
 		});
 	});
 }
@@ -87,7 +95,6 @@ function editItem(item){
 	$(".evil-input-new").focus();
 	$(".evil-input-new").blur(function(e){
 		var title_val=$(this).val();
-//							LeftNavitationInit();
 		$(parent_li).find('span').html(title_val);
 		//解除绑定事件
 		$("#navigation").find("ul").find('li').unbind();
@@ -105,7 +112,7 @@ function cursorInit(){
 				if(e.type=='mouseover'){
 					$(this).css({'background-color':'#deb887','border':'1px solid'});
 				}else if(e.type=='mouseout'){
-					$(this).css({'background-color':'#fff','border':'0px solid'});
+					$(this).css({'background-color':'#fff','border':'1px solid transparent'});
 				}else if(e.type=='click'){
 					///新建
 					if($(this).val()==2){
@@ -125,7 +132,6 @@ function cursorInit(){
 							$(".evil-input-new").focus();
 							$(".evil-input-new").blur(function(e){
 								var title_val=$(this).val();
-	//							LeftNavitationInit();
 								$("#navigation").find(".evil-li").last().find('span').html(title_val);
 								//解除绑定事件
 								$("#navigation").find("ul").find('li').unbind();
@@ -133,110 +139,83 @@ function cursorInit(){
 								LeftNavitationInit();
 							});
 					}else{
-//						var li_len=$("#navigation").find("ul").find('li').length;
-//						$("#background").css({'background-color':'beige','top':index*40+(li_len*40)+2+'px','border':'1px solid'});
-						$("#background_1").show().css({'background-color':'beige','top':index*40+'px','border':'1px solid'});
+						$("#background_1").show().animate({'background-color':'beige','top':index*40+'px','border':'1px solid'},"slow");
 						$("#background").hide();
-						display_flag=2;
 					}
 				}
 			});
 	});
 }
-/**
- * 
- * <p>MethodName: TreeInit</p>
- * <p>Description: 左侧树导航</p>
- * @returns
- * 
- * @example
- *
- * @author EVIL
- * @date 2017年9月17日
- * @version 1.0
- * Create At 2017年9月17日 下午6:05:20
- */
-function TreeInit(){
-	var setting={};
-	var zNodes=[
-		   {name:"test1", open:true, children:[
-			      {name:"test1_1"}, {name:"test1_2"}]},
-			   {name:"test2", open:true, children:[
-			      {name:"test2_1"}, {name:"test2_2"}]}
-			   ];
-	var zTreeObj = $.fn.zTree.init($("#ztree"), setting, zNodes);
+function getContentText(){
+	let child_li=$("#evil-content-title").children('li');
+	
 }
-/**
- * 
- * <p>MethodName: Pageinit</p>
- * <p>Description:页面初始化样式 包括富文本编辑器以及导航栏 </p>
- * @returns
- * 
- * @example
- *
- * @author EVIL
- * @date 2017年9月15日
- * @version 1.0
- * Create At 2017年9月15日 下午2:48:17
- */
-function Pageinit(){
-		layui.use(['element','layedit','upload'], function(){
-			var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-			var layedit = layui.layedit;
-			var upload = layui.upload;
-			//监听导航点击
-//			element.on('nav(demo)', function(elem){
-//				layer.msg(elem.text());
-//			});
-			
-			//富文本编辑器
-			var index=layedit.build('LAY_demo1', {
-			    tool: ['strong','italic','underline','del','|','left','center','right','link','unlink','face','image','code']
-			    ,height: 400,
-			    uploadImage:{url:projectName+'/fileManager/fileUpload',type:'post'}
-			  })
-			
-			//编辑器外部操作
-			var active = {
-					content: function(){
-						alert(layedit.getContent(index)); //获取编辑器内容
-					},
-					text: function(){
-						alert(layedit.getText(index)); //获取编辑器纯文本内容
-					},
-					selection: function(){
-						alert(layedit.getSelection(index));
-					}
-			};
-			$('.site-demo-layedit').on('click', function(){
-				var type = $(this).data('type');
-				active[type] ? active[type].call(this) : '';
-			});
-			
-			var uploadInst = upload.render({
-			    elem: '#test1'
-			    ,url: '/upload/'
-			    ,before: function(obj){
-			      //预读本地文件示例，不支持ie8
-			      obj.preview(function(index, file, result){
-			        $('#demo1').attr('src', result); //图片链接（base64）
-			      });
-			    }
-			    ,done: function(res){
-			      //如果上传失败
-			      if(res.code > 0){
-			        return layer.msg('上传失败');
-			      }
-			      //上传成功
-			    }
-			    ,error: function(){
-			      //演示失败状态，并实现重传
-			      var demoText = $('#demoText');
-			      demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
-			      demoText.find('.demo-reload').on('click', function(){
-			        uploadInst.upload();
-			      });
-			    }
-			  });
-		});
+function wangEditInit(){
+	 var E = window.wangEditor;
+	 var editor = new E('#editor')
+	 editor.customConfig.menus = [
+		    'head',  // 标题
+		    'bold',  // 粗体
+		    'italic',  // 斜体
+		    'underline',  // 下划线
+		    'strikeThrough',  // 删除线
+		    'foreColor',  // 文字颜色
+		    'backColor',  // 背景颜色
+		    'link',  // 插入链接
+		    'list',  // 列表
+		    'justify',  // 对齐方式
+		   // 'quote',  // 引用
+		    'emoticon',  // 表情
+		    'image',  // 插入图片
+		    'table',  // 表格
+		    'video',  // 插入视频
+		    'code',  // 插入代码
+		    'undo',  // 撤销
+		    'redo'  // 重复
+		];
+//	 editor.customConfig.uploadImgShowBase64 = true;
+	 editor.customConfig.uploadImgServer = 'fileManager/fileUpload';
+	 editor.customConfig.pasteFilterStyle = false;//
+	 editor.customConfig.showLinkImg = false
+	// editor.txt.html('<p>请从这书写内容</p>')
+	 editor.customConfig.uploadImgHooks={
+			// customInsert: function (insertLinkImg, result, editor) {
+		        //     console.log('customInsert')
+		        //     // 图片上传并返回结果，自定义插入图片的事件，而不是编辑器自动插入图片
+		        //     const data = result.data1 || []
+		        //     data.forEach(link => {
+		        //         insertLinkImg(link)
+		        //     })
+		        // },
+		        before: function before(xhr, editor, files) {
+		            // 图片上传之前触发
+
+		            // 如果返回的结果是 {prevent: true, msg: 'xxxx'} 则表示用户放弃上传
+		            // return {
+		            //     prevent: true,
+		            //     msg: '放弃上传'
+		            // }
+		        },
+		        success: function success(xhr, editor, result) {
+		            // 图片上传并返回结果，图片插入成功之后触发
+		        },
+		        fail: function fail(xhr, editor, result) {
+		            // 图片上传并返回结果，但图片插入错误时触发
+		        	
+		        },
+		        error: function error(xhr, editor) {
+		            // 图片上传出错时触发
+		        },
+		        timeout: function timeout(xhr, editor) {
+		            // 图片上传超时时触发
+		        }
+		        ,customInsert:function(insertLinkImg,result, editor){
+		        	if(result.imagesURI && result.imagesURI.push){
+		        		$(result.imagesURI).each(function(index,URItem){
+		        			insertLinkImg(projectName+URItem);
+		        		});
+		        	}
+		        }
+	 };
+	 editor.create();
 }

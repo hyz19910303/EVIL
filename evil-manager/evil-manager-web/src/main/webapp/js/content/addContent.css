@@ -42,7 +42,7 @@
 	line-height: 40px;
 	vertical-align: middle;
 	background-color: #bfda55;
-	
+	border: 1px outset;
 }
 .evil-book-li a{
 	text-align: right;

@@ -5,10 +5,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet" href="${pageContext.servletContext.contextPath }/js/layui/css/layui.css"  media="all">
-<%-- <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/js/ztree/css/zTreeStyle/zTreeStyle.css"  media="all"> --%>
+<%-- <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/js/layui/css/layui.css"  media="all"> --%>
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/js/content/addContent.css"  media="all">
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/content/addContent.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/wangEdit/release/wangEditor.js"></script>
 <title>新增</title>
 </head>
 <body>
@@ -45,14 +45,12 @@
 			</ul>
 		</div>
 		<div class="evil-book" oncontextmenu="rightClick();">
-			<ul >
-				<li class="evil-book-li"><a ><span class="evil-span">书架</span></a></li>
+			<ul id="evil-content-title">
 			</ul>
 		</div>
 		<div style="display: inline-block;width: 1200px">
 			<div style="padding-left: 420px">
-				<textarea class="layui-textarea" id="LAY_demo1" style="display: none" >  
-				</textarea>
+				<div id="editor" style="width: 1050px;height: 600px"></div>
 			</div>
 		</div>
 </body>

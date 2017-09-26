@@ -56,7 +56,10 @@
 	<mvc:resources location="/" mapping="/**/*.css"></mvc:resources>
 	<mvc:resources location="/" mapping="/**/*.png"></mvc:resources>
 	<mvc:resources location="/" mapping="/**/*.gif"></mvc:resources>
+	<mvc:resources location="/" mapping="/**/*.jpg"></mvc:resources>
+	<mvc:resources location="/" mapping="/**/*.jpeg"></mvc:resources>
 	<mvc:resources location="/js/" mapping="/js/**"></mvc:resources>
+	<mvc:resources location="/image/" mapping="/image/**"></mvc:resources>
 	
 	<!-- 文件上传 -->
 	<!-- <bean id="multipartResolver"
