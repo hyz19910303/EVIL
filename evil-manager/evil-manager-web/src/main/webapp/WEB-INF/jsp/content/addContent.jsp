@@ -49,9 +49,17 @@
 			</ul>
 		</div>
 		<div style="display: inline-block;width: 1200px">
-			<div style="padding-left: 420px">
-				<div id="editor" style="width: 1050px;height: 600px"></div>
+			<div style="padding-left: 370px">
+				<div id="editor" style="width: 1050px;"></div>
 			</div>
+		</div>
+		<div class="evil-edit-save-btn">
+			<ul>
+				<li>
+					<div id="save-content-btn" class="evil-save-release-btn">保存</div>
+				</li>
+				<li><div id="release-content-btn" class="evil-save-release-btn">直接发布</div></li>
+			</ul>
 		</div>
 </body>
 </html>

@@ -1,11 +1,17 @@
 //右键点击事件变量
 var edit_flag=false;//
+
 //页面加载后初始化
 $(function(){
 //	TreeInit();
 	LeftNavitationInit();
 	cursorInit();
-	wangEditInit();
+	var E = window.wangEditor;
+	var editor = new E('#editor')
+	wangEditInit(editor);
+	pageSizeAutoResize();
+	saveOrReleaseContent(editor,"save-content-btn","contentManager/Save","1");
+	saveOrReleaseContent(editor,"release-content-btn","contentManager/Release","2");
 });
 
 function rightClick(e){
@@ -150,9 +156,8 @@ function getContentText(){
 	let child_li=$("#evil-content-title").children('li');
 	
 }
-function wangEditInit(){
-	 var E = window.wangEditor;
-	 var editor = new E('#editor')
+function wangEditInit(editor){
+	 
 	 editor.customConfig.menus = [
 		    'head',  // 标题
 		    'bold',  // 粗体
@@ -168,14 +173,14 @@ function wangEditInit(){
 		    'emoticon',  // 表情
 		    'image',  // 插入图片
 		    'table',  // 表格
-		    'video',  // 插入视频
+		   // 'video',  // 插入视频
 		    'code',  // 插入代码
 		    'undo',  // 撤销
 		    'redo'  // 重复
 		];
 //	 editor.customConfig.uploadImgShowBase64 = true;
 	 editor.customConfig.uploadImgServer = 'fileManager/fileUpload';
-	 editor.customConfig.pasteFilterStyle = false;//
+	// editor.customConfig.pasteFilterStyle = true;//
 	 editor.customConfig.showLinkImg = false
 	// editor.txt.html('<p>请从这书写内容</p>')
 	 editor.customConfig.uploadImgHooks={
@@ -218,4 +223,87 @@ function wangEditInit(){
 		        }
 	 };
 	 editor.create();
+};
+/**
+ * 
+ * <p>MethodName: pageSizeAutoResize</p>
+ * <p>Description:页面元素大小根据屏幕自适应 未做完 </p>
+ * @returns
+ * 
+ * @example
+ *
+ * @author EVIL
+ * @date 2017年9月27日
+ * @version 1.0
+ * Create At 2017年9月27日 上午10:45:35
+ */
+function pageSizeAutoResize(){
+	var availHeight=window.screen.availHeight;
+	var availWidth=window.screen.availWidth;
+//	var pixelDepth=window.screen.pixelDepth;
+//	var deviceXDPI=window.screen.deviceXDPI;
+	var child_div=$("#editor").children('div');
+	$(child_div).each(function(index,item){
+		if(availWidth>1440){
+			$(item).css({'width':availWidth-500+'px'});
+			if(index!=0){
+				$(item).css({'height':availHeight-150+'px'});
+			}
+		}else{
+			$("#navigation").find()
+		}
+	});
+}
+/**
+ * 
+ * <p>MethodName: saveOrReleaseContent</p>
+ * <p>Description:保存或者发布文章 </p>
+ * @returns
+ * 
+ * @example
+ *
+ * @author EVIL
+ * @date 2017年9月27日
+ * @version 1.0
+ * Create At 2017年9月27日 上午10:46:55
+ */
+function saveOrReleaseContent(editor,id,uri,data){
+	$("#"+id).on('click',function(e){
+		var text=editor.txt.text();
+		if(!text || !text.trim()){
+			//TO-DO
+			return;
+		};
+		var html=editor.txt.html();
+		var la_data={
+				category:'随笔',
+				title:'生物论',
+				content:html,
+				flag:data
+		};
+		try{
+			$.ajax({
+				url:uri,
+				"data":la_data,
+				dataType:"json",
+				type:"post",
+				success:function(res){
+					if(res.resultInfo==='success'){
+						editor.txt.html("");
+					}else if(res.resultInfo==='fail'){
+						//TO-DO
+					}else{
+						//TO-DO
+						
+					}
+				},
+				error:function(rea){
+					console.log(res);
+				}
+			});
+		}catch(e){
+			
+		}
+		
+	});
 }

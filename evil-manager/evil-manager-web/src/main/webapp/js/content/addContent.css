@@ -28,14 +28,14 @@
 	display: inline-block;
 	position: absolute;
 	margin-left: 210px;
-	width: 200px;
+	width: 150px;
 	height: 40px;
 }
 .evil-book-li{
 	cursor: pointer;
 	border-radius: 20px;
 	height: 40px;
-	width: 200px;
+	width: 150px;
 	box-sizing: border-box;
 	font-size: 15px;
 	text-align:right;
@@ -91,4 +91,23 @@
 	line-height: 30px;
 	cursor: pointer;
 	display: inline-block;
+}
+.evil-edit-save-btn{
+	width: 80px;height: 100px;top: 40px;right: 20px;position: fixed;
+	border: 1px solid #dcdcdc;
+	border-radius: 10px
+}
+.evil-save-release-btn{
+    width: 60px;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    background-color: #dcdcdc;
+    margin-left: 8px;
+    margin-top: 5px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 12px;
+    vertical-align: middle;
+    padding-top: 10px;
 }

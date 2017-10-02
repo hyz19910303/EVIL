@@ -21,9 +21,6 @@ public class UserServiceImpl implements UserService {
 	public UserDO login(String userName) throws Exception {
 		UserDO user = new UserDO();
 		UserDO currentUser = userdao.getCurrentUser(userName);
-		//admin+123加密后的密码
-		user.setPassword("0192023a7bbd73250516f069df18b500");
-		user.setSalt("123");
 		return currentUser;	
 	}
 
@@ -36,7 +33,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(rollbackFor=Exception.class)
 	public int registerNewUser(UserDO userdo) {
-		userdo.setUserId(UUID.randomUUID().toString());
+		userdo.setUserId(UUID.randomUUID().toString().replaceAll("-", ""));
 		return userdao.insertByselective(userdo);
 	}
 
