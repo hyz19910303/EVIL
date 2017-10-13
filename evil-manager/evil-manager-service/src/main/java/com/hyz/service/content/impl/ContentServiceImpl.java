@@ -6,9 +6,13 @@ import java.util.UUID;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hyz.dao.hibernate.contentdao.ContentDao;
+import com.hyz.evil.util.UUIDUtil;
+import com.hyz.pojo.Category;
 import com.hyz.pojo.Content;
 import com.hyz.service.content.ContentService;
 
@@ -30,13 +34,26 @@ public class ContentServiceImpl implements ContentService {
 	@Autowired
 	private ContentDao contentdao;
 	
+	
 	@Override
-	@Transactional(rollbackFor=Exception.class)
-	public String saveContent(Content content) {
-		content.setContent_id(UUID.randomUUID().toString().replaceAll("-", ""));
+	@Transactional(rollbackFor=Exception.class,propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT)
+	public String saveContent(Category category,Content content) {
+		String categoryid=UUIDUtil.randonUUID();
+		category.setCategory_id(categoryid);
+		int effec=contentdao.saveCategory(category);
+		content.setCategory_id(categoryid);
+		content.setContent_id(UUIDUtil.randonUUID());
 		content.setCreateTime(DateFormatUtils.format(new Date(), "yyyyMMddHHmmss"));
 		int saveContent = contentdao.saveContent(content);
-		return saveContent==1?"success":"fail";
+		return saveContent+effec==2?"success":"fail";
+	}
+
+
+	@Override
+	@Transactional(rollbackFor=Exception.class,propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT)
+	public String saveCategory(Category category) {
+		int effec=contentdao.saveCategory(category);
+		return effec==1?"success":"fail";
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.hyz.dao.hibernate.contentdao.ContentDao;
+import com.hyz.pojo.Category;
 import com.hyz.pojo.Content;
 
 /**
@@ -30,6 +31,12 @@ public class ContentDaoImpl implements ContentDao {
 	@Override
 	public int saveContent(Content content) {
 		sessionfactory.getCurrentSession().save(content);
+		return 1;
+	}
+
+	@Override
+	public int saveCategory(Category category) {
+		sessionfactory.getCurrentSession().save(category);
 		return 1;
 	}
 

@@ -14,8 +14,7 @@ package com.hyz.pojo;
 public class Content {
 	
 	private String content_id;
-	private String user_id;
-	private String category;
+	private String category_id;
 	private String title;
 	private String content;
 	private String flag;
@@ -27,17 +26,13 @@ public class Content {
 	public void setContent_id(String content_id) {
 		this.content_id = content_id;
 	}
-	public String getUser_id() {
-		return user_id;
+	
+	
+	public String getCategory_id() {
+		return category_id;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
-	}
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
+	public void setCategory_id(String category_id) {
+		this.category_id = category_id;
 	}
 	public String getTitle() {
 		return title;

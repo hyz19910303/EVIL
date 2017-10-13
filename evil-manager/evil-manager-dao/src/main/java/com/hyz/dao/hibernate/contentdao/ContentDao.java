@@ -1,5 +1,6 @@
 package com.hyz.dao.hibernate.contentdao;
 
+import com.hyz.pojo.Category;
 import com.hyz.pojo.Content;
 
 /**
@@ -28,5 +29,18 @@ public interface ContentDao {
 	 * Create At 2017年9月19日 下午12:28:46
 	 */
 	int saveContent(Content content);
+	/**
+	 * 
+	 * <p>MethodName: saveCategory</p>
+	 * <p>Description:保存分类 </p>
+	 * @param category
+	 * @return
+	 * 
+	 * @author EVIL
+	 * @date 2017年10月13日
+	 * @version 1.0
+	 * Create At 2017年10月13日 上午9:55:19
+	 */
+	int saveCategory(Category category);
 	
 }

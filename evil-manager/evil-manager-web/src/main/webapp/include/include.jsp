@@ -11,6 +11,7 @@
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/layui/layui.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/vue/vue.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/ztree//js/jquery.ztree.all.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/common/util.js"></script>
 <script type="text/javascript">
 	var path="${pageContext.servletContext.contextPath }";
 	//当前的全部路径

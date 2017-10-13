@@ -2,6 +2,7 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 4.0//EN"
 "http://hibernate.sourceforge.net/hibernate-mapping-4.0.dtd">
 <hibernate-mapping package="com.hyz.pojo">
+	<!-- 用户表 -->
 	<class name="UserDO" table="tbl_user" >
 		<id name="userId" type="java.lang.String">
 			<column name="userId" />
@@ -62,15 +63,25 @@
 			<column name="age" />
 		</property>
 	</class>
-	<class name="Content" table="tbl_content">
-		<id name="content_id" type="java.lang.String">
-			<column name="content_id"/>
+	<!-- 分类表 -->
+	<class name="Category" table="tbl_category">
+		<id name="category_id" type="java.lang.String">
+			<column name="category_id"/>
 		</id>
 		<property name="user_id" type="java.lang.String">
 			<column name="user_id"/>
 		</property>
 		<property name="category" type="java.lang.String">
 			<column name="category"/>
+		</property>
+	</class>
+	<!-- 文章表 -->
+	<class name="Content" table="tbl_content">
+		<id name="content_id" type="java.lang.String">
+			<column name="content_id"/>
+		</id>
+		<property name="category_id" type="java.lang.String">
+			<column name="category_id"/>
 		</property>
 		<property name="title" type="java.lang.String">
 			<column name="title"/>

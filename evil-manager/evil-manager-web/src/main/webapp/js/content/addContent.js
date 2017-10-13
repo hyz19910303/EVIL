@@ -1,5 +1,5 @@
 //右键点击事件变量
-var edit_flag=false;//
+var edit_flag=false,category,title;//
 
 //页面加载后初始化
 $(function(){
@@ -49,13 +49,14 @@ function LeftNavitationInit(edit_flag){
 					$("#background_1").hide();
 					//数据库读取 
 					// TO-DO
-					let li=$(liItem);
+					var li=$(liItem);
+					category=li.text().trim();
 					$("#evil-content-title").empty();
 					//模拟数据
 					let content_title="";
 					var arr=[{"title":"书架"},{"title":"实践论"},{"title":"死亡"}];
 					for ( var e in arr) {
-						content_title+="<li class='evil-book-li'><a ><span class='evil-span'>"+arr[e]['title']+"</span></a></li>"
+						content_title+="<li class='evil-book-li' onclick='getArticleTitle(this)'><a ><span class='evil-span'>"+arr[e]['title']+"</span></a></li>"
 					}
 					$("#evil-content-title").hide().append($(content_title)).slideToggle("normal");
 				}
@@ -83,6 +84,24 @@ function LeftNavitationInit(edit_flag){
 		});
 	});
 }
+/**
+ * 
+ * <p>MethodName: getArticleTitle</p>
+ * <p>Description: 获取文章的标题</p>
+ * @param that
+ * @returns
+ * 
+ * @example
+ *
+ * @author EVIL
+ * @date 2017年10月12日
+ * @version 1.0
+ * Create At 2017年10月12日 下午5:10:12
+ */
+function getArticleTitle(that){
+	title=$(that).text();
+}
+
 //删除
 function deleteItem(item){
 	var parent_li=$(item).parents("li").remove();
@@ -138,6 +157,11 @@ function cursorInit(){
 							$(".evil-input-new").focus();
 							$(".evil-input-new").blur(function(e){
 								var title_val=$(this).val();
+								//插入数据库  to-do
+								commonRequestData('contentManager/saveCategory',{category:title_val},'json',function(res){
+									alert(res);
+								});
+								
 								$("#navigation").find(".evil-li").last().find('span').html(title_val);
 								//解除绑定事件
 								$("#navigation").find("ul").find('li').unbind();
@@ -270,17 +294,23 @@ function pageSizeAutoResize(){
 function saveOrReleaseContent(editor,id,uri,data){
 	$("#"+id).on('click',function(e){
 		var text=editor.txt.text();
-		if(!text || !text.trim()){
-			//TO-DO
+		if(!text || !text.trim() || !text.replaceAll("&nbsp;","")){
+			//TO-DO  提示
+			alert("内容不能为空");
 			return;
 		};
 		var html=editor.txt.html();
+		if(!category || !title){
+			alert("选择标题或者分类");
+			return 
+		}
 		var la_data={
-				category:'随笔',
-				title:'生物论',
-				content:html,
-				flag:data
+				'category':category,
+				'title':title,
+				'content':html,
+				'flag':data
 		};
+		debugger
 		try{
 			$.ajax({
 				url:uri,
