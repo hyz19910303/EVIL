@@ -4,6 +4,7 @@ var edit_flag=false,category,title;//
 //页面加载后初始化
 $(function(){
 //	TreeInit();
+	getLeftNavigationItem();
 	LeftNavitationInit();
 	cursorInit();
 	var E = window.wangEditor;
@@ -19,6 +20,31 @@ function rightClick(e){
 	window.event.returnValue=false; 
 	return false;
 }
+function getLeftNavigationItem(){
+	commonRequestData('contentManager/getCategory',{userId:userJson.userId},'json',function(res){
+		for(var i=0;i<res.length;i++){
+			var category=res[i].category;
+			var category_id=res[i].category_id;
+			var module="<li class='evil-li'>" ;
+			module+= "<div class='evil-div'>";
+			module+=  "<a>";
+			module+="	<span class='evil-span'>";
+			module+=		category;
+			module+="	</span>";
+			module+="<input type='hidden' value='"+category_id+"'>";
+			module+=  "</a>";
+			module+= "</div>";
+			module+="</li>";
+			$(module).appendTo($("#navigation").find("ul"));
+		}
+		$("#navigation").find("ul").find('li').unbind()
+		LeftNavitationInit(edit_flag);
+		var btn_obj=$("#new_btn");
+		var li_length=$("#navigation").find("ul").find('li').length;
+		btn_obj.css({'margin-top':li_length*40+2+'px'});
+	});
+}
+
 /**
  * 
  * <p>MethodName: LeftNavitationInit</p>
@@ -105,6 +131,10 @@ function getArticleTitle(that){
 //删除
 function deleteItem(item){
 	var parent_li=$(item).parents("li").remove();
+	var categiry_id=$(item).parents("li").find('span').next('input').val();
+	commonRequestData('contentManager/delete/deleteCategory',{category:categiry_id,category_id:in_category_id},'json',function(res){
+		
+	});
 	
 	var var_li=$("#navigation").find("ul").find('li').unbind();
 	var li_length=var_li.length;
@@ -115,11 +145,17 @@ function deleteItem(item){
 function editItem(item){
 	var parent_li=$(item).parents("li");
 	var span=$(parent_li).find('span');
+	var in_category_id=span.next('input').val();
+	var val=span.val();
 	var demo="<input class='evil-input-new' value='"+span.html()+"'>"; 
 	span.html(demo);
+	
 	$(".evil-input-new").focus();
 	$(".evil-input-new").blur(function(e){
 		var title_val=$(this).val();
+		commonRequestData('contentManager/edit/editCategory',{category:title_val,category_id:in_category_id},'json',function(res){
+			
+		});
 		$(parent_li).find('span').html(title_val);
 		//解除绑定事件
 		$("#navigation").find("ul").find('li').unbind();
@@ -154,12 +190,12 @@ function cursorInit(){
 							module+= "</div>";
 							module+="</li>";
 							$(module).appendTo($("#navigation").find("ul"));
-							$(".evil-input-new").focus();
+							$(".evil-input-new").focus().tooltip({placement:'left',title:'请输入类别名称',trigger:'focus'});
 							$(".evil-input-new").blur(function(e){
 								var title_val=$(this).val();
 								//插入数据库  to-do
-								commonRequestData('contentManager/saveCategory',{category:title_val},'json',function(res){
-									alert(res);
+								commonRequestData('contentManager/save/saveCategory',{category:title_val},'json',function(res){
+//									$(this).
 								});
 								
 								$("#navigation").find(".evil-li").last().find('span').html(title_val);
@@ -205,6 +241,7 @@ function wangEditInit(editor){
 //	 editor.customConfig.uploadImgShowBase64 = true;
 	 editor.customConfig.uploadImgServer = 'fileManager/fileUpload';
 	// editor.customConfig.pasteFilterStyle = true;//
+	 editor.customConfig.zIndex = 0;
 	 editor.customConfig.showLinkImg = false
 	// editor.txt.html('<p>请从这书写内容</p>')
 	 editor.customConfig.uploadImgHooks={
@@ -296,7 +333,7 @@ function saveOrReleaseContent(editor,id,uri,data){
 		var text=editor.txt.text();
 		if(!text || !text.trim() || !text.replaceAll("&nbsp;","")){
 			//TO-DO  提示
-			alert("内容不能为空");
+			$(this).tooltip({placement:'left',title:'内容不能为空'});
 			return;
 		};
 		var html=editor.txt.html();

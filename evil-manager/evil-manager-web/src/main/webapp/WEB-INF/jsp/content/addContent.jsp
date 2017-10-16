@@ -32,6 +32,7 @@
 			</ul>
 		</div>
 		<div>
+			
 			<ul id="new_btn" style="position: absolute;">
 				<div id="background_1" hidden="true" style="position: absolute;overflow: hidden;width: 200px;height: 40px;border-radius:0 20px 20px 0;background-color: beige;"></div>
 				<li class="evil-li">

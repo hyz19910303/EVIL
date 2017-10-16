@@ -36,7 +36,18 @@ public class ContentDaoImpl implements ContentDao {
 
 	@Override
 	public int saveCategory(Category category) {
-		sessionfactory.getCurrentSession().save(category);
+		sessionfactory.getCurrentSession().saveOrUpdate(category);
+		return 1;
+	}
+
+	@Override
+	public int editCategory(Category category) {
+		return saveCategory(category);
+	}
+
+	@Override
+	public int deleteCategory(Category category) {
+		sessionfactory.getCurrentSession().update(category);
 		return 1;
 	}
 

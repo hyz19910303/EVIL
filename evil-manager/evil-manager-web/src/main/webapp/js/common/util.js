@@ -22,7 +22,7 @@ function commonRequestData(uri,sendData,datatype,callback){
 				alert("请确认"+callback+"为function类型");
 			}
 		},
-		error:function(rea){
+		error:function(res){
 			console.log(res);
 		}
 	});

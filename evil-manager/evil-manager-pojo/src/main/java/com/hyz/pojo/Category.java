@@ -16,6 +16,15 @@ public class Category {
 	private String category_id;
 	private String user_id;
 	private String category;
+	private String flag;
+	
+	
+	public String getFlag() {
+		return flag;
+	}
+	public void setFlag(String flag) {
+		this.flag = flag;
+	}
 	public String getCategory_id() {
 		return category_id;
 	}

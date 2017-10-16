@@ -74,6 +74,9 @@
 		<property name="category" type="java.lang.String">
 			<column name="category"/>
 		</property>
+		<property name="flag" type="java.lang.String">
+			<column name="flag"/>
+		</property>
 	</class>
 	<!-- 文章表 -->
 	<class name="Content" table="tbl_content">

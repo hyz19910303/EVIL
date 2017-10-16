@@ -2,6 +2,7 @@ package com.hyz.service.content;
 
 import com.hyz.pojo.Category;
 import com.hyz.pojo.Content;
+import com.hyz.service.Exception.ParamErrorException;
 
 /**
 *Create at 2017年9月19日 下午12:32:31
@@ -41,5 +42,18 @@ public interface ContentService {
 	 * @version 1.0
 	 * Create At 2017年10月13日 上午11:03:12
 	 */
-	String saveCategory(Category category);
+	String operateCategory(Category category,String param) throws ParamErrorException;
+	/**
+	 * 
+	 * <p>MethodName: getCategory</p>
+	 * <p>Description: 根据用户ID获取他所以的分类</p>
+	 * @param userId
+	 * @return
+	 * 
+	 * @author EVIL
+	 * @date 2017年10月14日
+	 * @version 1.0
+	 * Create At 2017年10月14日 下午4:19:43
+	 */
+	String getCategory(String userId);
 }

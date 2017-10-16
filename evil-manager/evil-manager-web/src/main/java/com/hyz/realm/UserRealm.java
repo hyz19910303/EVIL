@@ -3,6 +3,7 @@ package com.hyz.realm;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.shiro.SecurityUtils;
@@ -25,6 +26,8 @@ import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSON;
+import com.beust.jcommander.internal.Maps;
 import com.hyz.evil.util.MD5Util;
 import com.hyz.exception.IPForbitException;
 import com.hyz.pojo.PermissionDO;
@@ -113,6 +116,12 @@ public class UserRealm extends AuthorizingRealm{
 		//用户名密码正确
 		if(CredentialsMatch) {
 			SecurityUtils.getSubject().getSession().setAttribute("user", user);
+			Map<String, String> newHashMap = Maps.newHashMap();
+			newHashMap.put("userId", user.getUserId());
+			newHashMap.put("accountNo", user.getAccountNo());
+			newHashMap.put("nickName", user.getNickName());
+			newHashMap.put("realName", user.getRealName());
+			SecurityUtils.getSubject().getSession().setAttribute("UserJson", JSON.toJSON(newHashMap));
 			return authenticationInfo;
 		}else {
 			throw new IncorrectCredentialsException();

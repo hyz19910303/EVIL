@@ -3,17 +3,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title></title>
 <%-- <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/js/layui/css/layui.css"  media="all"> --%>
+ <link href="${pageContext.servletContext.contextPath }/js/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="${pageContext.servletContext.contextPath }/js/index.css"  media="all">
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/jQuery/jquery-3.2.1.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/layui/layui.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/vue/vue.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/ztree//js/jquery.ztree.all.js"></script>
 <script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/common/util.js"></script>
+<script type="text/javascript" src="${pageContext.servletContext.contextPath }/js/bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	var path="${pageContext.servletContext.contextPath }";
+	var userStr ='${sessionScope.UserJson}';
+	var userJson=userStr?$.parseJSON(userStr):{};
+	
 	//当前的全部路径
 	var curWwwPath=window.document.location.href;  
     var pathName=window.document.location.pathname;  

@@ -42,5 +42,31 @@ public interface ContentDao {
 	 * Create At 2017年10月13日 上午9:55:19
 	 */
 	int saveCategory(Category category);
+	/**
+	 * 
+	 * <p>MethodName: editCategory</p>
+	 * <p>Description: 修改分类</p>
+	 * @param category
+	 * @return
+	 * 
+	 * @author EVIL
+	 * @date 2017年10月13日
+	 * @version 1.0
+	 * Create At 2017年10月13日 下午10:48:02
+	 */
+	int editCategory(Category category);
+	/**
+	 * 
+	 * <p>MethodName: deleteCategory</p>
+	 * <p>Description: 删除分类</p>
+	 * @param category
+	 * @return
+	 * 
+	 * @author EVIL
+	 * @date 2017年10月13日
+	 * @version 1.0
+	 * Create At 2017年10月13日 下午10:47:38
+	 */
+	int deleteCategory(Category category);
 	
 }

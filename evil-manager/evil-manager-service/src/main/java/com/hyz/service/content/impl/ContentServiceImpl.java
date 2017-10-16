@@ -1,7 +1,7 @@
 package com.hyz.service.content.impl;
 
 import java.util.Date;
-import java.util.UUID;
+import java.util.List;
 
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alibaba.fastjson.JSON;
 import com.hyz.dao.hibernate.contentdao.ContentDao;
 import com.hyz.evil.util.UUIDUtil;
 import com.hyz.pojo.Category;
 import com.hyz.pojo.Content;
+import com.hyz.service.Exception.ParamErrorException;
 import com.hyz.service.content.ContentService;
 
 /**
@@ -34,6 +36,8 @@ public class ContentServiceImpl implements ContentService {
 	@Autowired
 	private ContentDao contentdao;
 	
+	@Autowired
+	private com.hyz.dao.Mybatis.ContentDao.ContentDao mybatisContentDao;
 	
 	@Override
 	@Transactional(rollbackFor=Exception.class,propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT)
@@ -51,9 +55,33 @@ public class ContentServiceImpl implements ContentService {
 
 	@Override
 	@Transactional(rollbackFor=Exception.class,propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT)
-	public String saveCategory(Category category) {
-		int effec=contentdao.saveCategory(category);
+	public String operateCategory(Category category,String param) throws ParamErrorException {
+		int effec=0;
+		if("save".equals(param)) {
+			category.setCategory_id(UUIDUtil.randonUUID());
+			category.setFlag("1");
+			effec=contentdao.saveCategory(category);
+		}else if ("edit".equals(param)) {
+			if(category.getCategory_id()==null) {
+				throw new ParamErrorException("数据格式不正确");
+			}
+			category.setFlag("1");
+			effec=contentdao.editCategory(category);
+		}else if("delete".equals(param)) {
+			if(category.getCategory_id()==null) {
+				throw new ParamErrorException("数据格式不正确");
+			}
+			category.setFlag("0");
+			effec=contentdao.deleteCategory(category);
+		}
 		return effec==1?"success":"fail";
+	}
+
+
+	@Override
+	public String getCategory(String userId) {
+		List<Category> categoryList = mybatisContentDao.getCategoryList(userId);
+		return JSON.toJSONString(categoryList).toString();
 	}
 
 }

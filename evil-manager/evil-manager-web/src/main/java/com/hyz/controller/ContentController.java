@@ -2,7 +2,6 @@ package com.hyz.controller;
 
 
 import java.util.Map;
-import java.util.UUID;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,12 +10,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.beust.jcommander.internal.Maps;
-import com.hyz.dao.hibernate.userdao.UserDao;
 import com.hyz.pojo.Category;
 import com.hyz.pojo.Content;
 import com.hyz.pojo.UserDO;
@@ -63,18 +62,24 @@ public class ContentController {
 	}
 	
 	
-	@RequestMapping("/saveCategory")
+	@RequestMapping(value= {"/{param}/saveCategory","/{param}/editCategory","/param/deleteCategory"})
 	@ResponseBody
-	public Map<String,String> ReleaseContent(Category category,HttpSession session) {
+	public Map<String,String> ReleaseContent(Category category,HttpSession session,@PathVariable String param ) {
 		UserDO user=(UserDO) session.getAttribute("user");
-		
 		try {
 			category.setUser_id(user.getUserId());
-			String res=contentService.saveCategory(category);
+			String res=contentService.operateCategory(category,param);
 			return Maps.newHashMap("resultInfo",res);
 		} catch (Exception e) {
-			log.error(e.toString());
+			String message = e.getMessage();
+			log.error(e.getMessage());
 		}
 		return Maps.newHashMap("resultInfo","fail"); 
+	}
+	@RequestMapping(value= {"/getCategory"})
+	@ResponseBody
+	public String getCategoryList(String userId) {
+		String category=contentService.getCategory(userId);
+		return category;
 	}
 }
